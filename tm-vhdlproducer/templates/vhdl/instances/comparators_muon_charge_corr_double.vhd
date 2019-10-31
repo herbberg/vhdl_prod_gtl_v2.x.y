@@ -1,7 +1,7 @@
 {%- block instantiate_comparators_muon_charge_corr_double %}
   {%- set o1 = condition.objects[0] %}
   {%- set o2 = condition.objects[1] %}
-    comp_muon_charge_corr_double_{{ index }}_i: entity work.comparators_muon_charge_corr
+    comp_muon_cc_double_{{ index }}_i: entity work.comparators_muon_charge_corr
         generic map(
             double, CC_{{ condition.chargeCorrelation|upper }}
         )
