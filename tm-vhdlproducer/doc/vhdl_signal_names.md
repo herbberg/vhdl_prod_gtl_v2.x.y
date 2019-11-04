@@ -19,7 +19,7 @@
 #### Object cuts (cut type list: pt, eta, phi, iso, qual, charge)
     signal <cut type>_<obj type>_<index> : <obj type>_obj_t;
 
-#### Correlation cuts
+#### Correlation cuts (correlation cut list: deta, dphi, dr, inv_mass, trans_mass, tbpt)
     signal <cut type>_<obj type 1>_<obj type 2>_<index> : <obj type 1>_<obj type 2>_obj_t;
 
 #### Muon charge correlation
