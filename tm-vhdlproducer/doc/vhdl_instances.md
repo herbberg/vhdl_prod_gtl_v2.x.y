@@ -1,8 +1,11 @@
 ## VHDL instances in l1menu.vhd:
 
 Syntax:
+    
     -> VHDL instance
+    
         - required instance same objects - 1st level
+        
             - required instance same objects - 2nd level
 
 ### Calculations
