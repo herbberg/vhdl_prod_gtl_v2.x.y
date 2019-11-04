@@ -1,38 +1,43 @@
 ## VHDL instances in l1menu.vhd:
 
+Syntax:
+    -> VHDL instance
+        - required instance same objects - 1st level
+            - required instance same objects - 2nd level
+
 ### Calculations
     
-    -> muon_charge_correlations
+    -> muon_charge_correlations.vhd
     
-    -> deta_lut
-        - deta_calc
+    -> deta_lut.vhd
+        - deta_calc.vhd
     
-    -> dphi_lut
-        - dphi_calc
+    -> dphi_lut.vhd
+        - dphi_calc.vhd
     
-    -> delta_r
-        - deta_lut
-            - dphi_calc
+    -> delta_r.vhd
+        - deta_lut.vhd
+            - dphi_calc.vhd
             
-    -> invariant_mass
-        - cosh_deta_lut
-            - dphi_calc
-        - cos_dphi_lut
-            - dphi_calc
+    -> invariant_mass.vhd
+        - cosh_deta_lut.vhd
+            - dphi_calc.vhd
+        - cos_dphi_lut.vhd
+            - dphi_calc.vhd
     
-    -> transverse_mass
-        - cos_dphi_lut
-            - dphi_calc
+    -> transverse_mass.vhd
+        - cos_dphi_lut.vhd
+            - dphi_calc.vhd
     
-    -> twobody_pt
+    -> twobody_pt.vhd
     
 ### Comparators
 
-    -> comparators_obj_cuts
+    -> comparators_obj_cuts.vhd
     
-    -> comparators_corr_cuts
+    -> comparators_corr_cuts.vhd
     
-    -> comparators_muon_charge_corr
+    -> comparators_muon_charge_corr.vhd
     
 ### Combinations
 
@@ -40,12 +45,12 @@
     
 ### Conditions
 
-    -> combinatorial_conditions
+    -> combinatorial_conditions.vhd
     
-    -> combinatorial_conditions_ovrm
+    -> combinatorial_conditions_ovrm.vhd
     
-    -> correlation_conditions
+    -> correlation_conditions.vhd
     
-    -> correlation_conditions_ovrm
+    -> correlation_conditions_ovrm.vhd
     
    
