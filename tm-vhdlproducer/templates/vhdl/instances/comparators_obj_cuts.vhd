@@ -5,9 +5,11 @@
             N_{{ o1.type|upper }}_OBJECTS, {{ o1.type|upper }}_{{ o1.cut_handle.cut_type|upper }}_WIDTH,
   {%- if o1.cut_handle.cut_type == "pt" %}
             {{ o1.operator|upper }}, X"{{ o1.threshold|X04 }}"
-  {%- elsif o1.cut_handle.cut_type == "iso" %}
+  {%- elif o1.cut_handle.cut_type == "charge" %}
+            {{ o1.operator|upper }}, X"0000", X"0000", X"0", "{{ o1.charge }}"
+  {%- elif o1.cut_handle.cut_type == "iso" %}
             {{ o1.operator|upper }}, X"0000", X"0000", X"{{ o1.isolationLUT|X04 }}"
-  {%- elsif o1.cut_handle.cut_type == "qual" %}
+  {%- elif o1.cut_handle.cut_type == "qual" %}
             {{ o1.operator|upper }}, X"0000", X"0000", X"{{ o1.qualityLUT|X04 }}"
   {%- else %}
             {{ o1.operator|upper }}, X"{{ o1.LowerLimit|X04 }}", X"{{ o1.UpperLimit|X04 }}"
