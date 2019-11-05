@@ -1,7 +1,7 @@
 {%- block instantiate_invariant_mass %}
   {%- set o1 = condition.objects[0] %}
   {%- set o2 = condition.objects[1] %}
-    calc_invariant_mass_{{ index }}_i: entity work.invariant_mass
+    calc_inv_mass_{{ index_calc_inv_mass }}_i: entity work.invariant_mass
         generic map(
             N_{{ o1.type|upper }}_OBJECTS, N_{{ o2.type|upper }}_OBJECTS, ({{ o1.type }}_t,{{ o2.type }}_t),
             {{ o1.type|upper }}_PT_VECTOR_WIDTH, {{ o2.type|upper }}_PT_VECTOR_WIDTH,

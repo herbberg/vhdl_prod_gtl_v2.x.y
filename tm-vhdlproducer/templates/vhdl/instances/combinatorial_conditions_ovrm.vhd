@@ -48,52 +48,52 @@
   {%- endif %}
   {%- if {{ condition.chargeCorrelation }} in ('os', 'ls') %}
     {%- if {{ condition.nr_objects }} == 2 %}
-            charge_corr_double => cc_double_{{ index_cc_double }},
+            charge_corr_double => cc_double_{{ index_comp_cc_double }},
     {%- elif {{ condition.nr_objects }} == 3 %}
-            charge_corr_triple => cc_triple_{{ index_cc_triple }},
+            charge_corr_triple => cc_triple_{{ index_comp_cc_triple }},
     {%- elif {{ condition.nr_objects }} == 4 %}
-            charge_corr_quad => cc_quad_{{ index_cc_quad }},
+            charge_corr_quad => cc_quad_{{ index_comp_cc_quad }},
     {%- endif %}
   {%- endif %}
   {%- if {{ condition.nr_objects }} == 1 %}  
     {%- if {{ condition.deltaEtaOrm.enabled }} %}
-            deta_ovrm => deta_{{ o1.type }}_{{ o2.type }}_{{ index_deta }},         
+            deta_ovrm => deta_{{ o1.type }}_{{ o2.type }}_{{ index_comp_deta }},         
     {%- endif %}            
     {%- if {{ condition.deltaPhiOrm.enabled }} %}
-            dphi_ovrm => dphi_{{ o1.type }}_{{ o2.type }}_{{ index_dphi }},        
+            dphi_ovrm => dphi_{{ o1.type }}_{{ o2.type }}_{{ index_comp_dphi }},        
     {%- endif %}            
     {%- if {{ condition.deltaROrm.enabled }} %}
-            dr_ovrm => dr_{{ o1.type }}_{{ o2.type }}_{{ index_dr }},        
+            dr_ovrm => dr_{{ o1.type }}_{{ o2.type }}_{{ index_comp_dr }},        
     {%- endif %}            
   {%- elif {{ condition.nr_objects }} == 2 %}  
     {%- if {{ condition.deltaEtaOrm.enabled }} %}
-            deta_ovrm => deta_{{ o1.type }}_{{ o3.type }}_{{ index_deta }},         
+            deta_ovrm => deta_{{ o1.type }}_{{ o3.type }}_{{ index_comp_deta }},         
     {%- endif %}            
     {%- if {{ condition.deltaPhiOrm.enabled }} %}
-            dphi_ovrm => dphi_{{ o1.type }}_{{ o3.type }}_{{ index_dphi }},        
+            dphi_ovrm => dphi_{{ o1.type }}_{{ o3.type }}_{{ index_comp_dphi }},        
     {%- endif %}            
     {%- if {{ condition.deltaROrm.enabled }} %}
-            dr_ovrm => dr_{{ o1.type }}_{{ o3.type }}_{{ index_dr }},        
+            dr_ovrm => dr_{{ o1.type }}_{{ o3.type }}_{{ index_comp_dr }},        
     {%- endif %}            
   {%- elif {{ condition.nr_objects }} == 3 %}
     {%- if {{ condition.deltaEtaOrm.enabled }} %}
-            deta_ovrm => deta_{{ o1.type }}_{{ o4.type }}_{{ index_deta }},         
+            deta_ovrm => deta_{{ o1.type }}_{{ o4.type }}_{{ index_comp_deta }},         
     {%- endif %}            
     {%- if {{ condition.deltaPhiOrm.enabled }} %}
-            dphi_ovrm => dphi_{{ o1.type }}_{{ o4.type }}_{{ index_dphi }},        
+            dphi_ovrm => dphi_{{ o1.type }}_{{ o4.type }}_{{ index_comp_dphi }},        
     {%- endif %}            
     {%- if {{ condition.deltaROrm.enabled }} %}
-            dr_ovrm => dr_{{ o1.type }}_{{ o4.type }}_{{ index_dr }},        
+            dr_ovrm => dr_{{ o1.type }}_{{ o4.type }}_{{ index_comp_dr }},        
     {%- endif %}            
   {%- elif {{ condition.nr_objects }} == 4 %}
     {%- if {{ condition.deltaEtaOrm.enabled }} %}
-            deta_ovrm => deta_{{ o1.type }}_{{ o5.type }}_{{ index_deta }},         
+            deta_ovrm => deta_{{ o1.type }}_{{ o5.type }}_{{ index_comp_deta }},         
     {%- endif %}            
     {%- if {{ condition.deltaPhiOrm.enabled }} %}
-            dphi_ovrm => dphi_{{ o1.type }}_{{ o5.type }}_{{ index_dphi }},        
+            dphi_ovrm => dphi_{{ o1.type }}_{{ o5.type }}_{{ index_comp_dphi }},        
     {%- endif %}            
     {%- if {{ condition.deltaROrm.enabled }} %}
-            dr_ovrm => dr_{{ o1.type }}_{{ o5.type }}_{{ index_dr }},        
+            dr_ovrm => dr_{{ o1.type }}_{{ o5.type }}_{{ index_comp_dr }},        
     {%- endif %}            
   {%- endif %}
             cond_o => {{ condition.vhdl_signal }}

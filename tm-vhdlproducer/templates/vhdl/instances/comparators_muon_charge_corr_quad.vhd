@@ -8,7 +8,7 @@
         port map(
             lhc_clk, 
             cc_quad => cc_quad(bx({{ o1.object_handle.bx_offset }}),bx({{ o2.object_handle.bx_offset }})), 
-            comp_o_quad => cc_quad_{{ index }}
+            comp_o_quad => cc_quad_{{ index_comp_cc_quad }}
         );
 {% endblock instantiate_comparators_muon_charge_corr_quad %}
 {# eof #}

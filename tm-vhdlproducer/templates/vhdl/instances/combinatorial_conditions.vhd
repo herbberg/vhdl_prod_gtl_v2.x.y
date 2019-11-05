@@ -31,11 +31,11 @@
   {%- endif %}
   {%- if {{ condition.chargeCorrelation }} in ('os', 'ls') %}
     {%- if {{ condition.nr_objects }} == 2 %}
-            charge_corr_double => cc_double_{{ index_cc_double }},
+            charge_corr_double => cc_double_{{ index_comp_cc_double }},
     {%- elif {{ condition.nr_objects }} == 3 %}
-            charge_corr_triple => cc_triple_{{ index_cc_triple }},
+            charge_corr_triple => cc_triple_{{ index_comp_cc_triple }},
     {%- elif {{ condition.nr_objects }} == 4 %}
-            charge_corr_quad => cc_quad_{{ index_cc_quad }},
+            charge_corr_quad => cc_quad_{{ index_comp_cc_quad }},
     {%- endif %}
   {%- endif %}
             cond_o => {{ condition.vhdl_signal }}

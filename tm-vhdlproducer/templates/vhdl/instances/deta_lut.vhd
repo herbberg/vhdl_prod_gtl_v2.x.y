@@ -1,7 +1,7 @@
 {%- block instantiate_deta_lut %}
   {%- set o1 = condition.objects[0] %}
   {%- set o2 = condition.objects[1] %}
-    calc_deta_lut_{{ index }}_i: entity work.deta_lut
+    calc_deta_lut_{{ index_calc_deta_lut }}_i: entity work.deta_lut
         generic map(
             N_{{ o1.type|upper }}_OBJECTS, N_{{ o2.type|upper }}_OBJECTS, ({{ o1.type }}_t,{{ o2.type }}_t)
         )

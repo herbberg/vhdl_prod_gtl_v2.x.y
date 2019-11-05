@@ -30,47 +30,47 @@
             comb_{{ o1.type }}_{{ index_comb1 }}, comb_{{ o1.type }}_{{ index_comb1 }}, comb_{{ o2.type }}_{{ index_comb3 }},            
   {%- endif %}
   {%- if {{ condition.deltaEta.enabled }} %}
-            deta => deta_{{ o1.type }}_{{ o2.type }}_{{ index_deta }},         
+            deta => deta_{{ o1.type }}_{{ o2.type }}_{{ index_comp_deta }},         
   {%- endif %}            
   {%- if {{ condition.deltaPhi.enabled }} %}
-            dphi => dphi_{{ o1.type }}_{{ o2.type }}_{{ index_dphi }},        
+            dphi => dphi_{{ o1.type }}_{{ o2.type }}_{{ index_comp_dphi }},        
   {%- endif %}            
   {%- if {{ condition.deltaR.enabled }} %}
-            delta_r => dr_{{ o1.type }}_{{ o2.type }}_{{ index_dr }},        
+            delta_r => dr_{{ o1.type }}_{{ o2.type }}_{{ index_comp_dr }},        
   {%- endif %}            
   {%- if {{ condition.mass.enabled }} %}
     {%- if {{ condition.mass.type == 0 }} %}
-            inv_mass => inv_mass_{{ o1.type }}_{{ o2.type }}_{{ index_inv_mass }},
+            inv_mass => inv_mass_{{ o1.type }}_{{ o2.type }}_{{ index_comp_inv_mass }},
     {%- endif %}            
     {%- if {{ condition.mass.type == 1 }} %}
-            trans_mass => trans_mass_{{ o1.type }}_{{ o2.type }}_{{ index_trans_mass }},
+            trans_mass => trans_mass_{{ o1.type }}_{{ o2.type }}_{{ index_comp_trans_mass }},
     {%- endif %}
   {%- endif %}
   {%- if {{ condition.twoBodyPt.enabled }} %}
-            tbpt => tbpt_{{ o1.type }}_{{ o2.type }}_{{ index_tbpt }},     
+            tbpt => tbpt_{{ o1.type }}_{{ o2.type }}_{{ index_comp_tbpt }},     
   {%- endif %}            
   {%- if {{ condition.chargeCorrelation }} in ('os', 'ls') %}
-            charge_corr_double => cc_double_{{ index_cc_double }},
+            charge_corr_double => cc_double_{{ index_comp_cc_double }},
   {%- endif %}
   {%- if {{ o1.type }} == {{ o2.type }} %}  
     {%- if {{ condition.deltaEtaOrm.enabled }} %}
-            deta_ovrm => deta_{{ o1.type }}_{{ o3.type }}_{{ index_deta }},         
+            deta_ovrm => deta_{{ o1.type }}_{{ o3.type }}_{{ index_comp_deta }},         
     {%- endif %}
     {%- if {{ condition.deltaPhiOrm.enabled }} %}
-            dphi_ovrm => dphi_{{ o1.type }}_{{ o3.type }}_{{ index_dphi }},         
+            dphi_ovrm => dphi_{{ o1.type }}_{{ o3.type }}_{{ index_comp_dphi }},         
     {%- endif %}
     {%- if {{ condition.deltaROrm.enabled }} %}
-            dr_ovrm => dr_{{ o1.type }}_{{ o3.type }}_{{ index_dr }},        
+            dr_ovrm => dr_{{ o1.type }}_{{ o3.type }}_{{ index_comp_dr }},        
     {%- endif %}            
   {%- else %}  
     {%- if {{ condition.deltaEtaOrm.enabled }} %}
-            deta_ovrm => deta_{{ o1.type }}_{{ o2.type }}_{{ index_deta }},         
+            deta_ovrm => deta_{{ o1.type }}_{{ o2.type }}_{{ index_comp_deta }},         
     {%- endif %}
     {%- if {{ condition.deltaPhiOrm.enabled }} %}
-            dphi_ovrm => dphi_{{ o1.type }}_{{ o2.type }}_{{ index_dphi }},         
+            dphi_ovrm => dphi_{{ o1.type }}_{{ o2.type }}_{{ index_comp_dphi }},         
     {%- endif %}
     {%- if {{ condition.deltaROrm.enabled }} %}
-            dr_ovrm => dr_{{ o1.type }}_{{ o2.type }}_{{ index_dr }},        
+            dr_ovrm => dr_{{ o1.type }}_{{ o2.type }}_{{ index_comp_dr }},        
     {%- endif %}            
   {%- endif %}
             cond_o => {{ condition.vhdl_signal }}
