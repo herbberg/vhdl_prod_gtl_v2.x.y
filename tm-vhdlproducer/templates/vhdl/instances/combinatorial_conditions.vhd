@@ -18,10 +18,10 @@
             comb_1 => comb_a,
   {%- if {{ condition.nr_objects }} == 2 %}
             comb_2 => comb_b,
-  {%- elsif {{ condition.nr_objects }} == 3 %}
+  {%- elif {{ condition.nr_objects }} == 3 %}
             comb_2 => comb_b,
             comb_3 => comb_c,
-  {%- elsif {{ condition.nr_objects }} == 4 %}
+  {%- elif {{ condition.nr_objects }} == 4 %}
             comb_2 => comb_b,
             comb_3 => comb_c,
             comb_3 => comb_d,
@@ -32,9 +32,9 @@
   {%- if {{ condition.chargeCorrelation }} in ('os', 'ls') %}
     {%- if {{ condition.nr_objects }} == 2 %}
             charge_corr_double => cc_double_{{ index_cc_double }},
-    {%- elsif {{ condition.nr_objects }} == 3 %}
+    {%- elif {{ condition.nr_objects }} == 3 %}
             charge_corr_triple => cc_triple_{{ index_cc_triple }},
-    {%- elsif {{ condition.nr_objects }} == 4 %}
+    {%- elif {{ condition.nr_objects }} == 4 %}
             charge_corr_quad => cc_quad_{{ index_cc_quad }},
     {%- endif %}
   {%- endif %}
