@@ -1,7 +1,7 @@
 {%- block instantiate_comparator_inv_mass_cut %}
   {%- set o1 = condition.objects[0] %}
   {%- set o2 = condition.objects[1] %}
-    comp_inv_mass_{{ index }}_i: entity work.comparators_corr_cuts
+    comp_inv_mass_{{ compInvMass.objectTypes.index }}_i: entity work.comparators_corr_cuts
         generic map(
             N_{{ o1.type|upper }}_OBJECTS, N_{{ o2.type|upper }}_OBJECTS, ({{ o1.type }}_t,{{ o2.type }}_t),
             {{ o1.type|upper }}_{{ o2.type|upper }}_MASS_VECTOR_WIDTH, mass, 
@@ -9,7 +9,7 @@
         )
         port map(
             lhc_clk, 
-            inv_mass_{{ o1.type }}_{{ o2.type }}(bx({{ o1.object_handle.bx_offset }}),bx({{ o2.object_handle.bx_offset }})), inv_mass_{{ o1.type }}_{{ o2.type }}_{{ index_comp_inv_mass }}
+            inv_mass_{{ o1.type }}_{{ o2.type }}(bx({{ o1.object_handle.bx_offset }}),bx({{ o2.object_handle.bx_offset }})), inv_mass_{{ o1.type }}_{{ o2.type }}_{{ compInvMass.objectTypes.index }}
         );
 {% endblock instantiate_comparator_inv_mass_cut %}
 {# eof #}
