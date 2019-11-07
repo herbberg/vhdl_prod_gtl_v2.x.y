@@ -87,10 +87,12 @@ CustomFilters = {
 }
 
 ModuleTemplates = [
-    'algo_index.vhd',
-    'gtl_module_signals.vhd',
-    'gtl_module_instances.vhd',
-    'ugt_constants.vhd',
+    'l1menu.vhd',
+    'l1menu_pkg.vhd',
+    #'algo_index.vhd',
+    #'gtl_module_signals.vhd',
+    #'gtl_module_instances.vhd',
+    #'ugt_constants.vhd',
 ]
 
 # -----------------------------------------------------------------------------

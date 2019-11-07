@@ -872,6 +872,7 @@ class CaloConditionOvRmHelper(ConditionHelper):
         self.deltaPhiOrm = DeltaPhiCutHelper(0, 0)
         self.deltaROrm = DeltaRCutHelper(0, 0)
         self.twoBodyPt = TwoBodyPtCutHelper(0)
+        self.chargeCorrelation = charge_correlation_encode('ig')
         self.update(condition_handle)
 
     @property
@@ -889,6 +890,8 @@ class CaloConditionOvRmHelper(ConditionHelper):
                 self.deltaROrm.update(cut_handle)
             elif cut_handle.cut_type == tmEventSetup.TwoBodyPt:
                 self.twoBodyPt.update(cut_handle)
+            elif cut_handle.cut_type == tmEventSetup.ChargeCorrelation:
+                self.chargeCorrelation = charge_correlation_encode(cut_handle.data)
 
 # -----------------------------------------------------------------------------
 #  Object helpers
