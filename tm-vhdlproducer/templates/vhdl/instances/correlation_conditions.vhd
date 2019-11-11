@@ -14,27 +14,27 @@
         port map(
             lhc_clk, comb_{{ o1.type|lower|lower }}__index_comb1, comb_{{ o2.type|lower|lower }}__index_comb2,           
   {%- if condition.deltaEta.enabled == "true" %} 
-            deta => deta_{{ o1.type|lower }}_{{ o2.type|lower }}__index_comp_deta,         
+            deta => deta_{{ o1.type|lower }}_{{ o2.type|lower }}__index,         
   {%- endif %}            
   {%- if condition.deltaPhi.enabled == "true" %} 
-            dphi => dphi_{{ o1.type|lower }}_{{ o2.type|lower }}__index_comp_dphi,        
+            dphi => dphi_{{ o1.type|lower }}_{{ o2.type|lower }}__index,        
   {%- endif %}            
   {%- if condition.deltaR.enabled == "true" %} 
-            delta_r => dr_{{ o1.type|lower }}_{{ o2.type|lower }}__index_comp_dr,        
+            delta_r => dr_{{ o1.type|lower }}_{{ o2.type|lower }}__index,        
   {%- endif %}            
   {%- if condition.mass.enabled == "true" %} 
     {%- if condition.mass.type == 0 %} 
-            inv_mass => inv_mass_{{ o1.type|lower }}_{{ o2.type|lower }}__index_comp_inv_mass,
+            inv_mass => inv_mass_{{ o1.type|lower }}_{{ o2.type|lower }}__index,
     {%- endif %}            
     {%- if condition.mass.type == 1 %} 
-            trans_mass => trans_mass_{{ o1.type|lower }}_{{ o2.type|lower }}__index_comp_trans_mass,
+            trans_mass => trans_mass_{{ o1.type|lower }}_{{ o2.type|lower }}__index,
     {%- endif %}
   {%- endif %}
   {%- if condition.twoBodyPt.enabled == "true" %} 
-            tbpt => tbpt_{{ o1.type|lower }}_{{ o2.type|lower }}__index_comp_tbpt,     
+            tbpt => tbpt_{{ o1.type|lower }}_{{ o2.type|lower }}__index,     
   {%- endif %}            
   {%- if condition.chargeCorrelation in ('os', 'ls') %}
-            charge_corr_double => cc_double__index_comp_cc_double,
+            charge_corr_double => cc_double__index,
   {%- endif %}
             cond_o => {{ condition.vhdl_signal }}
         );

@@ -11,19 +11,19 @@
         )
         port map(
             lhc_clk, 
-            comb_1 => comb_a,
+            comb_1 => comb_{{ o1.type|lower }}__index_a,
   {%- if condition.nr_objects  == 2 %}
-            comb_2 => comb_b,
+            comb_2 => comb_{{ o1.type|lower }}__index_b,
   {%- elif condition.nr_objects  == 3 %}
-            comb_2 => comb_b,
-            comb_3 => comb_c,
+            comb_2 => comb_{{ o1.type|lower }}__index_b,
+            comb_3 => comb_{{ o1.type|lower }}__index_c,
   {%- elif condition.nr_objects  == 4 %}
-            comb_2 => comb_b,
-            comb_3 => comb_c,
-            comb_4 => comb_d,
+            comb_2 => comb_{{ o1.type|lower }}__index_b,
+            comb_3 => comb_{{ o1.type|lower }}__index_c,
+            comb_4 => comb_{{ o1.type|lower }}__index_d,
   {%- endif %}
   {%- if condition.twoBodyPt.enabled == "true" %}
-            tbpt => tbpt_{{ o1.type|lower }}_{{ o1.type|lower }}__index_comp_tbpt,        
+            tbpt => tbpt_{{ o1.type|lower }}_{{ o1.type|lower }}__index,        
   {%- endif %}
             cond_o => {{ condition.vhdl_signal }}
         );
