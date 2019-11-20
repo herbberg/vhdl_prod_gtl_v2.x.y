@@ -20,6 +20,8 @@
     
     -> delta_r.vhd
         - deta_lut.vhd
+            - deta_calc.vhd
+        - dphi_lut.vhd
             - dphi_calc.vhd
     
     -> invariant_mass.vhd
