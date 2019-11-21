@@ -1,7 +1,7 @@
 {%- block instantiate_twobody_pt %}
   {%- set o1 = condition.objects[0] %}
   {%- set o2 = condition.objects[1] %}
-    calc_twobody_pt_{{ index_calc_twobody }}_i: entity work.twobody_pt
+    calc_twobody_pt_{{ o1.type }}_{{ o2.type }}_bx_{{ o1.object_handle.bx_offset }}_bx_{{ o2.object_handle.bx_offset }}_i: entity work.twobody_pt
         generic map(
             N_{{ o1.type|upper }}_OBJECTS, N_{{ o2.type|upper }}_OBJECTS
             {{ o1.type|upper }}_PT_VECTOR_WIDTH, {{ o2.type|upper }}_PT_VECTOR_WIDTH
