@@ -1,15 +1,15 @@
 {%- block instantiate_deta_calc %}
   {%- set o1 = condition.objects[0] %}
   {%- set o2 = condition.objects[1] %}
-    calc_deta_{{ o1.type }}_{{ o2.type }}_bx_{{ o1.object_handle.bx_offset }}_bx_{{ o2.object_handle.bx_offset }}_i: entity work.deta_calc
+    calc_deta_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx_raw }}_bx_{{ o2.bx_raw }}_i: entity work.deta_calc
         generic map(
-            N_{{ o1.type|upper }}_OBJECTS, N_{{ o1.type|upper }}_OBJECTS, ({{ o1.type }}_t,{{ o2.type }}_t)
+            N_{{ o1.type|upper }}_OBJECTS, N_{{ o1.type|upper }}_OBJECTS, ({{ o1.type|lower }}_t,{{ o2.type|lower }}_t)
         )
         port map(
-            conv.{{ o1.type }}(bx(o1.object_handle.bx_offset }})).eta,
-            conv.{{ o2.type }}(bx(o2.object_handle.bx_offset }})).eta,
-            deta_calc_{{ o1.type }}_{{ o2.type }}(bx({{ o1.object_handle.bx_offset),bx({{ o2.object_handle.bx_offset }}))
+            conv.{{ o1.type|lower }}(bx({{ o1.bx_raw }})).eta,
+            conv.{{ o2.type|lower }}(bx({{ o2.bx_raw }})).eta,
+            deta_calc_{{ o1.type|lower }}_{{ o2.type|lower }}(bx({{ o1.bx_raw }}),bx({{ o2.bx_raw }}))
         );
-{% endblock instantiate_deta_calc %}
+{%- endblock instantiate_deta_calc %}
 {# eof #}
 

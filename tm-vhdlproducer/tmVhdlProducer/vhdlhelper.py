@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-#
-# Repository path   : $HeadURL: $
-# Last committed    : $Revision: $
-# Last changed by   : $Author: $
-# Last changed date : $Date: $
-#
-
 """Template helper classes.
 
 Overview of class hierarchy:
@@ -57,10 +49,10 @@ import sys, os
 
 import tmEventSetup
 import tmGrammar  # import after tmEventSetup
-import algodist
-import handles
 
-from tmVhdlProducer import __version__
+from . import algodist
+from . import handles
+from . import __version__
 
 # -----------------------------------------------------------------------------
 #  Precompiled regular expressions
@@ -84,7 +76,20 @@ ObjectTypes = {
     tmEventSetup.HTT: tmGrammar.HTT,
     tmEventSetup.ETM: tmGrammar.ETM,
     tmEventSetup.ETMHF: tmGrammar.ETMHF,
+#    tmEventSetup.HTMHF: tmGrammar.HTMHF,
     tmEventSetup.HTM: tmGrammar.HTM,
+    tmEventSetup.ASYMET: tmGrammar.ASYMET,
+    tmEventSetup.ASYMHT: tmGrammar.ASYMHT,
+    tmEventSetup.ASYMETHF: tmGrammar.ASYMETHF,
+    tmEventSetup.ASYMHTHF: tmGrammar.ASYMHTHF,
+    tmEventSetup.CENT0: tmGrammar.CENT0,
+    tmEventSetup.CENT1: tmGrammar.CENT1,
+    tmEventSetup.CENT2: tmGrammar.CENT2,
+    tmEventSetup.CENT3: tmGrammar.CENT3,
+    tmEventSetup.CENT4: tmGrammar.CENT4,
+    tmEventSetup.CENT5: tmGrammar.CENT5,
+    tmEventSetup.CENT6: tmGrammar.CENT6,
+    tmEventSetup.CENT7: tmGrammar.CENT7,
     tmEventSetup.EXT: tmGrammar.EXT,
     tmEventSetup.MBT0HFP: tmGrammar.MBT0HFP,
     tmEventSetup.MBT1HFP: tmGrammar.MBT1HFP,
@@ -104,7 +109,20 @@ ObjectCount = {
     tmEventSetup.HTT:        1,
     tmEventSetup.ETM:        1,
     tmEventSetup.ETMHF:      1,
+#    tmEventSetup.HTMHF:      1,
     tmEventSetup.HTM:        1,
+    tmEventSetup.ASYMET:     1,
+    tmEventSetup.ASYMHT:     1,
+    tmEventSetup.ASYMETHF:   1,
+    tmEventSetup.ASYMHTHF:   1,
+    tmEventSetup.CENT0:      1,
+    tmEventSetup.CENT1:      1,
+    tmEventSetup.CENT2:      1,
+    tmEventSetup.CENT3:      1,
+    tmEventSetup.CENT4:      1,
+    tmEventSetup.CENT5:      1,
+    tmEventSetup.CENT6:      1,
+    tmEventSetup.CENT7:      1,
     tmEventSetup.EXT:        1,
     tmEventSetup.MBT0HFP:    1,
     tmEventSetup.MBT1HFP:    1,
@@ -128,8 +146,21 @@ EsumsTypes = [
     tmGrammar.ETTEM,
     tmGrammar.ETM,
     tmGrammar.ETMHF,
+#    tmGrammar.HTMHF,
     tmGrammar.HTT,
     tmGrammar.HTM,
+    tmGrammar.ASYMET,
+    tmGrammar.ASYMHT,
+    tmGrammar.ASYMETHF,
+    tmGrammar.ASYMHTHF,
+    tmGrammar.CENT0,
+    tmGrammar.CENT1,
+    tmGrammar.CENT2,
+    tmGrammar.CENT3,
+    tmGrammar.CENT4,
+    tmGrammar.CENT5,
+    tmGrammar.CENT6,
+    tmGrammar.CENT7,
 ]
 
 TowerCountTypes = [
@@ -245,6 +276,8 @@ def conditionFactory(condition_handle):
         return MuonConditionHelper(condition_handle)
     elif condition_handle.isEsumsCondition():
         return EsumsConditionHelper(condition_handle)
+    elif condition_handle.isSignalCondition():
+        return SignalConditionHelper(condition_handle)
     elif condition_handle.isExternalCondition():
         return ExternalConditionHelper(condition_handle)
     elif condition_handle.isMinBiasCondition():
@@ -320,7 +353,6 @@ class InfoHelper(VhdlHelper):
         scale_set  [str]
         version  [str]
         sw_version  [str]
-        svn_revision  [int]
     """
 
     def __init__(self, collection):
@@ -332,7 +364,6 @@ class InfoHelper(VhdlHelper):
         self.scale_set = eventSetup.getScaleSetName()
         self.version = VersionHelper(eventSetup.getVersion())
         self.sw_version = VersionHelper(__version__)
-        self.svn_revision = eventSetup.svnRevision # HACK
 
 class ModuleHelper(VhdlHelper):
     """Module template helper.
@@ -387,6 +418,10 @@ class ModuleHelper(VhdlHelper):
     @property
     def esumsConditions(self):
         return filter(lambda condition: condition.handle.isEsumsCondition(), self.conditions)
+
+    @property
+    def signalConditions(self):
+        return filter(lambda condition: condition.handle.isSignalCondition(), self.conditions)
 
     @property
     def externalConditions(self):
@@ -697,6 +732,11 @@ class EsumsConditionHelper(ConditionHelper):
     ReqObjects = 1
     """Number of required objects."""
 
+class SignalConditionHelper(ConditionHelper):
+    """Signal condition template helper class."""
+    ReqObjects = 1
+    """Number of required objects."""
+
 class ExternalConditionHelper(ConditionHelper):
     """External condition template helper class."""
     ReqObjects = 1
@@ -872,7 +912,6 @@ class CaloConditionOvRmHelper(ConditionHelper):
         self.deltaPhiOrm = DeltaPhiCutHelper(0, 0)
         self.deltaROrm = DeltaRCutHelper(0, 0)
         self.twoBodyPt = TwoBodyPtCutHelper(0)
-        self.chargeCorrelation = charge_correlation_encode('ig')
         self.update(condition_handle)
 
     @property
@@ -890,8 +929,6 @@ class CaloConditionOvRmHelper(ConditionHelper):
                 self.deltaROrm.update(cut_handle)
             elif cut_handle.cut_type == tmEventSetup.TwoBodyPt:
                 self.twoBodyPt.update(cut_handle)
-            elif cut_handle.cut_type == tmEventSetup.ChargeCorrelation:
-                self.chargeCorrelation = charge_correlation_encode(cut_handle.data)
 
 # -----------------------------------------------------------------------------
 #  Object helpers
@@ -905,6 +942,7 @@ class ObjectHelper(VhdlHelper):
         type                [str]
         operator            [str]
         bx                  [str]
+        bx_raw              [str]
         externalSignalName  [str]
         externalChannelId   [int]
         threshold           [int]
@@ -912,12 +950,17 @@ class ObjectHelper(VhdlHelper):
         qualityLUT          [int]
         charge              [str]
         count               [int]
-        etaFullRange        [str]
+        etaNrCuts           [int]
         etaW1LowerLimit     [int]
         etaW1UpperLimit     [int]
-        etaW2Ignore         [str]
         etaW2LowerLimit     [int]
         etaW2UpperLimit     [int]
+        etaW3LowerLimit     [int]
+        etaW3UpperLimit     [int]
+        etaW4LowerLimit     [int]
+        etaW4UpperLimit     [int]
+        etaW5LowerLimit     [int]
+        etaW5UpperLimit     [int]
         phiFullRange        [str]
         phiW1LowerLimit     [int]
         phiW1UpperLimit     [int]
@@ -937,6 +980,7 @@ class ObjectHelper(VhdlHelper):
         self.type = 'UNDEFINED'
         self.operator = vhdl_bool(True)
         self.bx = bx_encode(0)
+        self.bx_raw = 0
         self.externalSignalName = 'UNDEFINED'
         self.externalChannelId = 0
         # common cuts
@@ -945,13 +989,19 @@ class ObjectHelper(VhdlHelper):
         self.qualityLUT = 0xffff
         self.charge = charge_encode('ign')
         self.count = 0
+        self.hasCount = False
         # spatial cuts
-        self.etaFullRange = vhdl_bool(True)
+        self.etaNrCuts = 0
         self.etaW1LowerLimit = 0
         self.etaW1UpperLimit = 0
-        self.etaW2Ignore = vhdl_bool(True)
         self.etaW2LowerLimit = 0
         self.etaW2UpperLimit = 0
+        self.etaW3LowerLimit = 0
+        self.etaW3UpperLimit = 0
+        self.etaW4LowerLimit = 0
+        self.etaW4UpperLimit = 0
+        self.etaW5LowerLimit = 0
+        self.etaW5UpperLimit = 0
         self.phiFullRange = vhdl_bool(True)
         self.phiW1LowerLimit = 0
         self.phiW1UpperLimit = 0
@@ -968,6 +1018,7 @@ class ObjectHelper(VhdlHelper):
         self.name = object_handle.name
         self.type = ObjectTypes[object_handle.type]
         self.operator = vhdl_bool(ComparisonOperator[object_handle.comparison_operator])
+        self.bx_raw = object_handle.bx_offset
         self.bx = bx_encode(object_handle.bx_offset)
         self.externalSignalName = object_handle.external_signal_name
         self.externalChannelId = object_handle.external_channel_id
@@ -991,18 +1042,31 @@ class ObjectHelper(VhdlHelper):
                 self.charge = charge_encode(cut_handle.data)
             if cut_handle.cut_type == tmEventSetup.Count:
                 self.count = cut_handle.minimum.index
+                self.hasCount = True
             if cut_handle.cut_type == tmEventSetup.Slice:
                 self.sliceLow  =  int(cut_handle.minimum.value) # float to int
                 self.sliceHigh =  int(cut_handle.maximum.value)
         # setup eta windows
         if len(etaCuts) > 0:
-            self.etaFullRange = vhdl_bool(False)
+            self.etaNrCuts = 1
             self.etaW1LowerLimit = etaCuts[0][0]
             self.etaW1UpperLimit = etaCuts[0][1]
         if len(etaCuts) > 1:
-            self.etaW2Ignore = vhdl_bool(False)
+            self.etaNrCuts = 2
             self.etaW2LowerLimit = etaCuts[1][0]
             self.etaW2UpperLimit = etaCuts[1][1]
+        if len(etaCuts) > 2:
+            self.etaNrCuts = 3
+            self.etaW2LowerLimit = etaCuts[2][0]
+            self.etaW2UpperLimit = etaCuts[2][1]
+        if len(etaCuts) > 3:
+            self.etaNrCuts = 4
+            self.etaW2LowerLimit = etaCuts[3][0]
+            self.etaW2UpperLimit = etaCuts[3][1]
+        if len(etaCuts) > 4:
+            self.etaNrCuts = 5
+            self.etaW2LowerLimit = etaCuts[4][0]
+            self.etaW2UpperLimit = etaCuts[4][1]
         # setup phi windows
         if len(phiCuts) > 0:
             self.phiFullRange = vhdl_bool(False)
@@ -1029,6 +1093,11 @@ class ObjectHelper(VhdlHelper):
     def is_esums_type(self):
         """Retruns True if object is of energy sums type."""
         return self.handle and self.handle.isEsumsObject()
+
+    @property
+    def is_signal_type(self):
+        """Retruns True if object is of energy sums type."""
+        return self.handle and self.handle.isSignalObject()
 
 # -----------------------------------------------------------------------------
 #  Cut helper
@@ -1126,7 +1195,6 @@ if __name__ == '__main__':
     tray = algodist.ResourceTray(resource)
     # Load event setup
     eventSetup = tmEventSetup.getTriggerMenu(args.filename)
-    eventSetup.svnRevision = 0
 
     # Distribute modules
     collection = algodist.ModuleCollection(eventSetup, tray)
@@ -1136,18 +1204,17 @@ if __name__ == '__main__':
     menu = MenuHelper(collection)
 
     # Info
-    print "*" * 80
-    print "menu.info.name          :", menu.info.name
-    print "menu.info.uuid_menu     :", menu.info.uuid_menu
-    print "menu.info.uuid_firmware :", menu.info.uuid_firmware
-    print "menu.info.scale_set     :", menu.info.scale_set
-    print "menu.info.version       :", menu.info.version
-    print "menu.info.sw_version    :", menu.info.sw_version
-    print "menu.info.svn_revision  :", menu.info.svn_revision
-    print "*" * 80
-    print "menu.algorithms|length  :", len(menu.algorithms)
-    print "menu.conditions|length  :", len(menu.conditions)
-    print "*" * 80
+    print("*" * 80)
+    print("menu.info.name          :", menu.info.name)
+    print("menu.info.uuid_menu     :", menu.info.uuid_menu)
+    print("menu.info.uuid_firmware :", menu.info.uuid_firmware)
+    print("menu.info.scale_set     :", menu.info.scale_set)
+    print("menu.info.version       :", menu.info.version)
+    print("menu.info.sw_version    :", menu.info.sw_version)
+    print("*" * 80)
+    print("menu.algorithms|length  :", len(menu.algorithms))
+    print("menu.conditions|length  :", len(menu.conditions))
+    print("*" * 80)
 
     assert len(eventSetup.getAlgorithmMapPtr()) == len(menu.algorithms), "algorithm count missmatch"
     assert len(eventSetup.getConditionMapPtr()) == len(menu.conditions), "condition count missmatch"
@@ -1156,46 +1223,46 @@ if __name__ == '__main__':
     if args.m:
         # Modules
         for module in menu.modules:
-            print "module.id                :", module.id
-            print "module.algorithms|length :", len(module.algorithms)
-            print "module.conditions|length :", len(module.conditions)
-            print "-" * 80
-            print "module.correlationCombinations:"
+            print("module.id                :", module.id)
+            print("module.algorithms|length :", len(module.algorithms))
+            print("module.conditions|length :", len(module.conditions))
+            print("-" * 80)
+            print("module.correlationCombinations:")
             for a, b in module.correlationCombinations:
-                print " ", a.type, a.bx, "<>", b.type, b.bx
-            print "-" * 80
-            print "module.muonBxCombinations:"
+                print(" ", a.type, a.bx, "<>", b.type, b.bx)
+            print("-" * 80)
+            print("module.muonBxCombinations:")
             for a, b in module.muonBxCombinations:
-                print "  {a} <> {b}".format(a=a, b=b)
-            print "-" * 80
-            print "module.conversionObjects:"
+                print("  {a} <> {b}".format(a=a, b=b))
+            print("-" * 80)
+            print("module.conversionObjects:")
             for o in module.conversionObjects:
-                print "  {o.name} (type:{o.type}, threshold:{o.threshold}, bx:{o.bx})".format(o=o)
-            print "-" * 80
-            print "module.correlationObjects:"
+                print("  {o.name} (type:{o.type}, threshold:{o.threshold}, bx:{o.bx})".format(o=o))
+            print("-" * 80)
+            print("module.correlationObjects:")
             for o in module.correlationObjects:
-                print "  {o.name} (type:{o.type}, threshold:{o.threshold}, bx:{o.bx})".format(o=o)
-            print "-" * 80
+                print("  {o.name} (type:{o.type}, threshold:{o.threshold}, bx:{o.bx})".format(o=o))
+            print("-" * 80)
 
             if args.c:
                 for condition in module.conditions:
-                    print "condition.name        :", condition.name
-                    print "condition.vhdl_signal :", condition.vhdl_signal
-                    print "condition.type :", condition.type
+                    print("condition.name        :", condition.name)
+                    print("condition.vhdl_signal :", condition.vhdl_signal)
+                    print("condition.type :", condition.type)
                     if condition.handle.type == tmEventSetup.InvariantMass:
-                        print "condition.mass.enabled :", condition.mass.enabled
-                        print "condition.mass.lower :", condition.mass.lower
-                        print "condition.mass.upper :", condition.mass.upper
+                        print("condition.mass.enabled :", condition.mass.enabled)
+                        print("condition.mass.lower :", condition.mass.lower)
+                        print("condition.mass.upper :", condition.mass.upper)
                     if condition.handle.type == tmEventSetup.TransverseMass:
-                        print "condition.mass.enabled :", condition.mass.enabled
-                        print "condition.mass.lower :", condition.mass.lower
-                        print "condition.mass.upper :", condition.mass.upper
+                        print("condition.mass.enabled :", condition.mass.enabled)
+                        print("condition.mass.lower :", condition.mass.lower)
+                        print("condition.mass.upper :", condition.mass.upper)
                     if args.o:
-                        print "condition.objects:"
+                        print("condition.objects:")
                         for obj in condition.objects:
-                            print "  name      :", obj.name
-                            print "  type      :", obj.type
-                            print "  threshold :", obj.threshold
-                            print "  bx        :", obj.bx
-                    print
-        print "*" * 80
+                            print("  name      :", obj.name)
+                            print("  type      :", obj.type)
+                            print("  threshold :", obj.threshold)
+                            print("  bx        :", obj.bx)
+                    print()
+        print("*" * 80)

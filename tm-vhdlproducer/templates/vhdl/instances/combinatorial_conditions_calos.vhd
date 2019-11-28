@@ -11,21 +11,29 @@
         )
         port map(
             lhc_clk, 
-            comb_1 => comb_{{ o1.type|lower }}__index_a,
-  {%- if condition.nr_objects  == 2 %}
-            comb_2 => comb_{{ o1.type|lower }}__index_b,
-  {%- elif condition.nr_objects  == 3 %}
-            comb_2 => comb_{{ o1.type|lower }}__index_b,
-            comb_3 => comb_{{ o1.type|lower }}__index_c,
-  {%- elif condition.nr_objects  == 4 %}
-            comb_2 => comb_{{ o1.type|lower }}__index_b,
-            comb_3 => comb_{{ o1.type|lower }}__index_c,
-            comb_4 => comb_{{ o1.type|lower }}__index_d,
+  {%- if condition.nr_objects > 0 %}
+    {%- with obj = condition.objects[0] %}
+            comb_1 =>  {%- include  "helper/helper_comb_and_calos_signals_names.txt" %}
+    {%- endwith %}
+  {%- endif %}
+  {%- if condition.nr_objects > 1 %}
+    {%- with obj = condition.objects[1] %}
+            comb_2 =>  {%- include  "helper/helper_comb_and_calos_signals_names.txt" %}
+    {%- endwith %}
+  {%- endif %}
+  {%- if condition.nr_objects > 2 %}
+    {%- with obj = condition.objects[2] %}
+            comb_3 =>  {%- include  "helper/helper_comb_and_calos_signals_names.txt" %}
+    {%- endwith %}
+  {%- endif %}
+  {%- if condition.nr_objects > 3 %}
+    {%- with obj = condition.objects[3] %}
+            comb_4 =>  {%- include  "helper/helper_comb_and_calos_signals_names.txt" %}
+    {%- endwith %}
   {%- endif %}
   {%- if condition.twoBodyPt.enabled == "true" %}
-            tbpt => tbpt_{{ o1.type|lower }}_{{ o1.type|lower }}__index,        
+            tbpt => tbpt_{{ o1.type|lower }}_{{ o1.type|lower }}_bx_{{ o1.bx }}_bx_{{ o1.bx }}_0x{{ condition.twoBodyPt.lower|X13 }},        
   {%- endif %}
             cond_o => {{ condition.vhdl_signal }}
         );
 {% endblock instantiate_combinatorial_conditions_calos %}
-{# eof #}

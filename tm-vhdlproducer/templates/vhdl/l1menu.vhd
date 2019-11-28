@@ -39,276 +39,216 @@ entity l1menu is
 end l1menu;
 
 architecture rtl of l1menu is
-
--- ============================================================
--- UNDER CONSTRUCTION
--- ============================================================
-
--- ************************************************************
--- DRAFT
-
--- Signal definitions for calculations outputs
+-- Calculations outputs
+    -- Differences
+{%- for condition in module.caloCaloCorrConditions %}
+  {%- if condition.deltaEta.enabled == 'true' or condition.deltaR.enabled == 'true' or (condition.mass.enabled == 'true' and condition.mass.type == 0) %}
+    signal deta_calc_{{ condition.objects[0].type|lower }}_{{ condition.objects[1].type|lower }} : obj_bx_max_eta_range_array;
+  {%- endif %}
+  {%- if condition.deltaPhi.enabled == 'true' or condition.deltaR.enabled == 'true' or condition.mass.enabled == 'true' %}
+    signal dphi_calc_{{ condition.objects[0].type|lower }}_{{ condition.objects[1].type|lower }} : obj_bx_max_phi_range_array;
+  {%- endif %}
+{%- endfor %}
+    -- Correlation cuts
+{%- for condition in module.caloCaloCorrConditions %}
+  {%- if condition.deltaEta.enabled == 'true' %}
+    signal deta_{{ condition.objects[0].type|lower }}_{{ condition.objects[1].type|lower }} : obj_bx_max_eta_range_array;
+  {%- endif %}
+  {%- if condition.deltaPhi.enabled == 'true' %}
+    signal dphi_{{ condition.objects[0].type|lower }}_{{ condition.objects[1].type|lower }} : obj_bx_max_phi_range_array;
+  {%- endif %}
+  {%- if condition.deltaR.enabled == 'true' %}
+    signal dr_{{ condition.objects[0].type|lower }}_{{ condition.objects[1].type|lower }} : obj_bx_max_phi_range_array;
+  {%- endif %}
+  {%- if condition.mass.enabled == 'true' and condition.mass.type == 0 %}
+    signal cosh_deta_{{ condition.objects[0].type|lower }}_{{ condition.objects[1].type|lower }} : obj_bx_corr_cuts_std_logic_array;
+    signal cos_dphi_{{ condition.objects[0].type|lower }}_{{ condition.objects[1].type|lower }} : obj_bx_corr_cuts_std_logic_array;
+    signal inv_mass_{{ condition.objects[0].type|lower }}_{{ condition.objects[1].type|lower }} : obj_bx_corr_cuts_std_logic_array;
+  {%- endif %}
+  {%- if condition.mass.enabled == 'true' and condition.mass.type == 1 %}
+    signal cos_dphi_{{ condition.objects[0].type|lower }}_{{ condition.objects[1].type|lower }} : obj_bx_corr_cuts_std_logic_array;
+    signal trans_mass_{{ condition.objects[0].type|lower }}_{{ condition.objects[1].type|lower }} : obj_bx_corr_cuts_std_logic_array;
+  {%- endif %}
+{%- endfor %}
     -- Muon charge correlation    
     signal cc_double : obj_bx_muon_cc_double_array;
     signal cc_triple : obj_bx_muon_cc_triple_array;
     signal cc_quad : obj_bx_muon_cc_quad_array;
-    -- Differences
-{%- for detaCalc in module.detaCalcList %}
-    signal deta_calc_{{ detaCalc.objectType1 }}_{{ detaCalc.objectType2 }} : obj_bx_max_eta_range_array;
-{%- endfor %}
-{%- for dphiCalc in module.dphiCalcList %}
-    signal dphi_calc_{{ dphiCalc.objectType1 }}_{{ dphiCalc.objectType2 }} : obj_bx_max_eta_range_array;
-{%- endfor %}
-    -- Correlation cuts
-{%- for deta in module.detaList %}
-    signal deta_{{ deta.objectType1 }}_{{ deta.objectType2 }} : obj_bx_corr_cuts_std_logic_array;
-{%- endfor %}
-{%- for dphi in module.dphiList %}
-    signal dphi_{{ dphi.objectType1 }}_{{ dphi.objectType2 }} : obj_bx_corr_cuts_std_logic_array;
-{%- endfor %}
-{%- for deltaR in module.deltaRList %}
-    signal dr_{{ deltaR.objectType1 }}_{{ deltaR.objectType2 }} : obj_bx_corr_cuts_std_logic_array;
-{%- endfor %}
-{%- for coshDeta in module.coshDetaList %}
-    signal cosh_deta_{{ coshDeta.objectType1 }}_{{ coshDeta.objectType2 }} : obj_bx_corr_cuts_std_logic_array;
-{%- endfor %}
-{%- for cosDphi in module.cosDphiList %}
-    signal cos_dphi_{{ cosDphi.objectType1 }}_{{ cosDphi.objectType2 }} : obj_bx_corr_cuts_std_logic_array;
-{%- endfor %}
-{%- for invMass in module.invMassList %}
-    signal inv_mass_{{ invMass.objectType1 }}_{{ invMass.objectType2 }} : obj_bx_corr_cuts_std_logic_array;
-{%- endfor %}
-{%- for transMass in module.transMassList %}
-    signal trans_mass_{{ transMass.objectType1 }}_{{ transMass.objectType2 }} : obj_bx_corr_cuts_std_logic_array;
-{%- endfor %}
-{%- for twoBodyPt in module.twoBodyPtList %}
-    signal tbpt_{{ twoBodyPt.objectType1 }}_{{ twoBodyPt.objectType2 }} : obj_bx_corr_cuts_std_logic_array;
-{%- endfor %}
-
--- Signal definitions for comparators outputs
-    -- Object cuts  
-{%- for compPt in module.compPtList %}
-    signal pt_{{ compPt.objectType }}_{{ compPt.objectType.index }} : {{ compPt.objectType }}_obj_t;
-{%- endfor %}
-{%- for compEta in module.compEtaList %}
-    signal eta_{{ compEta.objectType }}_{{ compEta.objectType.index }} : {{ compEta.objectType }}_obj_t;
-{%- endfor %}
-{%- for compPhi in module.compPhiList %}
-    signal phi_{{ compPhi.objectType }}_{{ compPhi.objectType.index }} : {{ compPhi.objectType }}_obj_t;
-{%- endfor %}
-{%- for compIso in module.compIsoList %}
-    signal iso_{{ compIso.objectType }}_{{ compIso.objectType.index }} : {{ compIso.objectType }}_obj_t;
-{%- endfor %}
-{%- for compQual in module.compQualList %}
-    signal qual_{{ compQual.objectType }}_{{ compQual.objectType.index }} : {{ compQual.objectType }}_obj_t;
-{%- endfor %}
-{%- for compCharge in module.compChargeList %}
-    signal charge_{{ compCharge.objectType }}_{{ compCharge.objectType.index }} : {{ compCharge.objectType }}_obj_t;
-{%- endfor %}
-    -- Counts
-{%- for compMinimumBias in module.compMinimumBiasList %}
-    signal {{ compMinimumBias.objectType }}_{{ compMinimumBias.objectType.index }} : {{ compMinimumBias.objectType }}_obj_t;
-{%- endfor %}
-{%- for compTowercount in module.compTowercountList %}
-    signal {{ compTowercount }}_{{ compTowercount.index }} : {{ compTowercount }}_obj_t;
-{%- endfor %}
-{%- for compAsymmetry in module.compAsymmetryList %}
-    signal {{ compAsymmetry.objectType }}_{{ compAsymmetry.objectType.index }} : {{ compAsymmetry.objectType }}_obj_t;
-{%- endfor %}
-    -- Correlation cuts  (compCorrCuts.name: deta, dphi, dr, cosh_deta, cos_dphi, inv_mass, trans_mass, tbpt)   
-{%- for compDeta in module.compDetaList %}
-    signal deta_{{ compDeta.objectType1 }}_{{ compDeta.objectType2 }}_{{ compDeta.index }} : {{ compDeta.objectType1 }}_{{ compDeta.objectType2 }}_t;
-{%- endfor %}
-{%- for compDphi in module.compDphiList %}
-    signal dphi_{{ compDphi.objectType1 }}_{{ compDphi.objectType2 }}_{{ compDphi.index }} : {{ compDphi.objectType1 }}_{{ compDphi.objectType2 }}_t;
-{%- endfor %}
-{%- for compDr in module.compDrList %}
-    signal dr_{{ compDr.objectType1 }}_{{ compDr.objectType2 }}_{{ compDr.index }} : {{ compDr.objectType1 }}_{{ compDr.objectType2 }}_t;
-{%- endfor %}
-{%- for compInvMass in module.compInvMassList %}
-    signal inv_mass_{{ compInvMass.objectType1 }}_{{ compInvMass.objectType2 }}_{{ compInvMass.index }} : {{ compInvMass.objectType1 }}_{{ compInvMass.objectType2 }}_t;
-{%- endfor %}
-{%- for compTransMass in module.compTransMassList %}
-    signal trans_mass_{{ compTransMass.objectType1 }}_{{ compTransMass.objectType2 }}_{{ compTransMass.index }} : {{ compTransMass.objectType1 }}_{{ compTransMass.objectType2 }}_t;
-{%- endfor %}
-{%- for compTwoBodyPt in module.compTwoBodyPtList %}
-    signal tbpt_{{ compTwoBodyPt.objectType1 }}_{{ compTwoBodyPt.objectType2 }}_{{ compTwoBodyPt.index }} : {{ compTwoBodyPt.objectType1 }}_{{ compTwoBodyPt.objectType2 }}_t;
-{%- endfor %}
-    -- Muon charge correlation    
-{%- for compMuonChargeCorr in module.compMuonChargeCorrList %}
-    signal cc_{{ compMuonChargeCorr.type }}_{{ compMuonChargeCorr.type.index }} : muon_cc_{{ compMuonChargeCorr.type }}_t;
-{%- endfor %}
+-- Comparators outputs
+    -- Object cuts
+{%- for condition in module.caloConditions %}
+    signal comp_pt_{{ condition.objects[0].type|lower }}_bx_{{ condition.objects[0].bx }}_0x{{ condition.objects[0].threshold|X04 }} : std_logic;
+    {%- include  "helper/helper_eta_signals.txt" %}
+    {%- include  "helper/helper_phi_signals.txt" %}
+    signal comp_iso_{{ condition.objects[0].type|lower }}_bx_{{ condition.objects[0].bx }}_0x{{ condition.objects[0].isolationLUT|X04 }} : std_logic;
+{%- endfor %}    
+{%- for condition in module.muonConditions %}
+    signal comp_pt_{{ condition.objects[0].type|lower }}_bx_{{ condition.objects[0].bx }}_0x{{ condition.objects[0].threshold|X04 }} : std_logic;
+    {%- include  "helper/helper_eta_signals.txt" %}
+    {%- include  "helper/helper_phi_signals.txt" %}
+    signal comp_iso_{{ condition.objects[0].type|lower }}_bx_{{ condition.objects[0].bx }}_0x{{ condition.objects[0].isolationLUT|X04 }} : std_logic;
+    signal comp_qual_{{ condition.objects[0].type|lower }}_bx_{{ condition.objects[0].bx }}_0x{{ condition.objects[0].qualityLUT|X04 }} : std_logic;
+{%- endfor %}    
+    -- Correlation cuts 
     
--- Signal definitions for conditions inputs
-    -- Object cuts "and"  
-{%- for combAnd in module.combAndList %}
-    signal comb_{{ combAnd.objectType }}_{{ combAnd.objectType.index }} : {{ combAnd.objectType }}_obj_t;
-{%- endfor %}
--- ************************************************************
-
+    -- Muon charge correlation 
+    
+    -- Asymmetry  
+    
+    -- Minimum-bias 
+    
+-- Conditions inputs
+    -- Object cuts "and"
+{%- for condition in module.caloConditions %}
+  {%- if condition.nr_objects > 0 %}
+    {%- with obj = condition.objects[0] %}
+    {%- include  "helper/helper_comb_and_calos_signals.txt" -%}
+    {%- endwith -%}
+  {%- endif -%}    
+  {%- if condition.nr_objects > 1 %}    
+    {%- with obj = condition.objects[1] %}
+    {%- include  "helper/helper_comb_and_calos_signals.txt" -%}
+    {%- endwith -%}
+  {%- endif -%}    
+  {%- if condition.nr_objects > 2 %}    
+    {%- with obj = condition.objects[2] %}
+    {%- include  "helper/helper_comb_and_calos_signals.txt" -%}
+    {%- endwith -%}
+  {%- endif -%}    
+  {%- if condition.nr_objects > 3 %}    
+    {%- with obj = condition.objects[3] %}
+    {%- include  "helper/helper_comb_and_calos_signals.txt" -%}
+    {%- endwith -%}
+  {%- endif -%}    
+{%- endfor %}    
+{%- for condition in module.muonConditions %}
+  {%- if condition.nr_objects > 0 %}
+    {%- with obj = condition.objects[0] %}
+    {%- include  "helper/helper_comb_and_muons_signals.txt" -%}
+    {%- endwith -%}
+  {%- endif -%}    
+  {%- if condition.nr_objects > 1 %}    
+    {%- with obj = condition.objects[1] %}
+    {%- include  "helper/helper_comb_and_muons_signals.txt" -%}
+    {%- endwith -%}
+  {%- endif -%}    
+  {%- if condition.nr_objects > 2 %}    
+    {%- with obj = condition.objects[2] %}
+    {%- include  "helper/helper_comb_and_muons_signals.txt" -%}
+    {%- endwith -%}
+  {%- endif -%}    
+  {%- if condition.nr_objects > 3 %}    
+    {%- with obj = condition.objects[3] %}
+    {%- include  "helper/helper_comb_and_muons_signals.txt" -%}
+    {%- endwith -%}
+  {%- endif -%}    
+{%- endfor %}    
+{%- for condition in module.caloCaloCorrConditions %}
+    {%- with obj = condition.objects[0] %}
+    {%- include  "helper/helper_comb_and_calos_signals.txt" -%}
+    {%- endwith -%}
+    {%- with obj = condition.objects[1] %}
+    {%- include  "helper/helper_comb_and_calos_signals.txt" -%}
+    {%- endwith -%}
+{%- endfor %}        
 -- Signal definition for conditions names
 {%- for condition in module.conditions %}
     signal {{ condition.vhdl_signal }} : std_logic;
 {%- endfor %}
-
 -- Signal definition for algorithms names
 {%- for algorithm in module.algorithms|sort_by_attribute('index') %}
     signal {{ algorithm.vhdl_signal }} : std_logic;
 {%- endfor %}
 
 begin
-
--- ============================================================
--- UNDER CONSTRUCTION
--- ============================================================
-
--- External condition assignment
-{%- for condition in module.externalConditions %}
-    {{ condition.vhdl_signal }} <= data_in.ext_cond(bx({{ condition.objects[0].bx }}))({{ condition.objects[0].externalChannelId }}); -- {{ condition.vhdl_signal }}
+-- First stage: calculations
+{%- for condition in module.caloCaloCorrConditions %}
+  {%- if condition.deltaEta.enabled == 'true' or condition.deltaR.enabled == 'true' or (condition.mass.enabled == 'true' and condition.mass.type == 0) %}
+    {%- include  "instances/deta_calc.vhd" %}
+    {%- include  "instances/deta_lut.vhd" %}
+  {%- endif %}
+  {%- if condition.deltaPhi.enabled == 'true' or condition.deltaR.enabled == 'true' or (condition.mass.enabled == 'true' and condition.mass.type == 0) %}
+    {%- include  "instances/dphi_calc.vhd" %}
+    {%- include  "instances/dphi_lut.vhd" %}
+  {%- endif %}
+  {%- if condition.deltaR.enabled == 'true' %}
+    {%- include  "instances/delta_r.vhd" %}
+  {%- endif %}
+  {%- if condition.mass.enabled == 'true' %}
+    {%- if condition.mass.type == 0 %}
+    {%- include  "instances/cosh_deta_lut.vhd" %}
+    {%- include  "instances/cos_dphi_lut.vhd" %}
+    {%- include  "instances/invariant_mass.vhd" %}
+    {%- else %}
+    {%- include  "instances/cosh_deta_lut.vhd" %}
+    {%- include  "instances/cos_dphi_lut.vhd" %}
+    {%- include  "instances/transverse_mass.vhd" %}
+    {%- endif %}
+  {%- endif %}
 {%- endfor %}
-
--- ************************************************************
--- DRAFTS
-
--- Instantiations for calculations
-    -- Differences
-{%- for detaCalc in module.detaCalcList %}
-{%- include  "instances/deta_calc.vhd" %}
-{%- endfor %}
-{%- for dphiCalc in module.dphiCalcList %}
-{%- include  "instances/dphi_calc.vhd" %}
-{%- endfor %}
-    -- Correlation cuts
-{%- for deta in module.detaList %}
-{%- include  "instances/deta_lut.vhd" %}
-{%- endfor %}
-{%- for dphi in module.dphiList %}
-{%- include  "instances/dphi_lut.vhd" %}
-{%- endfor %}
-{%- for deltaR in module.deltaRList %}
-{%- include  "instances/delta_r.vhd" %}
-{%- endfor %}
-{%- for coshDeta in module.coshDetaList %}
-{%- include  "instances/cosh_deta_lut.vhd" %}
-{%- endfor %}
-{%- for cosDphi in module.cosDphiList %}
-{%- include  "instances/cos_dphi_lut.vhd" %}
-{%- endfor %}
-{%- for invMass in module.invMassList %}
-{%- include  "instances/invariant_mass.vhd" %}
-{%- endfor %}
-{%- for transMass in module.transMassList %}
-{%- include  "instances/transverse_mass.vhd" %}
-%- endfor %}
-{%- for twoBodyPt in module.twoBodyPtList %}
-{%- include  "instances/twobody_pt.vhd" %}
-{%- endfor %}
-
--- Instantiations for comparisons
-    -- Object cuts  
-{%- for compPt in module.compPtList %}
-{%- include  "instances/comparator_pt_cut.vhd" %}
-{%- endfor %}
-{%- for compEta in module.compEtaList %}
-{%- include  "instances/comparator_eta_cut.vhd" %}
-{%- endfor %}
-{%- for compPhi in module.compPhiList %}
-{%- include  "instances/comparator_phi_cut.vhd" %}
-{%- endfor %}
-{%- for compIso in module.compIsoList %}
-{%- include  "instances/comparator_iso_cut.vhd" %}
-{%- endfor %}
-{%- for compQual in module.compQualList %}
-{%- include  "instances/comparator_qual_cut.vhd" %}
-{%- endfor %}
-{%- for compCharge in module.compChargeList %}
-{%- include  "instances/comparator_charge_cut.vhd" %}
-{%- endfor %}
-    -- Counts
-{%- for compMinimumBias in module.compMinimumBiasList %}
-{%- include  "instances/comparator_minimum_bias.vhd" %}
-{%- endfor %}
-{%- for compTowercount in module.compTowercountList %}
-{%- include  "instances/comparator_towercount.vhd" %}
-{%- endfor %}
-{%- for compAsymmetry in module.compAsymmetryList %}
-{%- include  "instances/comparator_asymmetry.vhd" %}
-{%- endfor %}
-    -- Correlation cuts  
-{%- for compDeta in module.compDetaList %}
-{%- include  "instances/comparator_deta_cut.vhd" %}
-{%- endfor %}
-{%- for compDphi in module.compDphiList %}
-{%- include  "instances/comparator_dphi_cut.vhd" %}
-{%- endfor %}
-{%- for compDr in module.compDrList %}
-{%- include  "instances/comparator_dr_cut.vhd" %}
-{%- endfor %}
-{%- for compInvMass in module.compInvMassList %}
-{%- include  "instances/comparator_inv_mass_cut.vhd" %}
-{%- endfor %}
-{%- for compTransMass in module.compTransMassList %}
-{%- include  "instances/comparator_trans_mass_cut.vhd" %}
-{%- endfor %}
-{%- for compTwoBodyPt in module.compTwoBodyPtList %}
-{%- include  "instances/comparator_tbpt_cut.vhd" %}
-{%- endfor %}
-
--- Instantiations for combining objects cuts
-{%- for combAnd in module.combAndList %}
-    comb_{{ combAnd.objectType }}_{{ combAnd.objectType.index }} <= {{ combAnd.objectType.index.equation }};
-{%- endfor %}
-
--- Instantiations for conditions
+-- Second stage: comparisons
 {%- for condition in module.caloConditions %}
-{%- include  "instances/combinatorial_conditions.vhd" %}
-{%- endfor %}
-{%- for condition in module.caloConditionsOvRm %}
-{%- include  "instances/combinatorial_conditions_ovrm.vhd" %}
+    {%- include  "instances/comparator_pt_cut.vhd" %}
+    {%- include  "helper/helper_eta_cuts.txt" %}
+    {%- include  "helper/helper_phi_cuts.txt" %}
+    {%- include  "instances/comparator_iso_cut.vhd" %}
 {%- endfor %}
 {%- for condition in module.muonConditions %}
-{%- include  "instances/combinatorial_conditions.vhd" %}
-{%- endfor %}
-{%- for condition in module.esumsConditions %}
-{%- include  "instances/combinatorial_conditions.vhd" %}
+    {%- include  "instances/comparator_pt_cut.vhd" %}
+    {%- include  "helper/helper_eta_cuts.txt" %}
+    {%- include  "helper/helper_phi_cuts.txt" %}
+    {%- include  "instances/comparator_iso_cut.vhd" %}
+    {%- include  "instances/comparator_qual_cut.vhd" %}
 {%- endfor %}
 {%- for condition in module.caloCaloCorrConditions %}
-{%- include  "instances/correlation_conditions.vhd" %}
+    {%- include  "instances/comparator_pt_cut.vhd" %}
+  {%- if condition.deltaEta.enabled == 'true' %}
+    {%- include  "instances/comparator_deta_cut.vhd" %}
+  {%- endif %}
+  {%- if condition.mass.enabled == 'true' %}
+    {%- if condition.mass.type == 0 %}
+    {%- include  "instances/comparator_inv_mass_cut.vhd" %}    
+    {%- else %}
+    {%- include  "instances/comparator_trans_mass_cut.vhd" %}    
+    {%- endif %}
+  {%- endif %}
 {%- endfor %}
-{%- for condition in module.caloCaloCorrOvRmConditions %}
-{%- include  "instances/correlation_conditions_ovrm.vhd" %}
-{%- endfor %}
+-- Third stage: conditions and algos
+    -- Creating condition inputs (combination of object cuts)
+{%- for condition in module.caloConditions %}
+    {%- include  "instances/comb_and_calos.vhd" -%}
+{%- endfor -%}    
+{%- for condition in module.muonConditions %}
+    {%- include  "instances/comb_and_muons.vhd" -%}
+{%- endfor -%}    
+{%- for condition in module.caloCaloCorrConditions %}
+    {%- include  "instances/comb_and_calos.vhd" -%}
+{%- endfor -%}    
+    -- Instantiations of conditions
+{%- for condition in module.caloConditions %}
+    {%- include  "instances/combinatorial_conditions_calos.vhd" %}
+{%- endfor %}    
+{%- for condition in module.muonConditions %}
+    {%- include  "instances/combinatorial_conditions_muons.vhd" %}
+{%- endfor %}    
+{%- for condition in module.caloCaloCorrConditions %}
+    {%- include  "instances/correlation_conditions.vhd" %}
+{%- endfor %}    
 {%- for condition in module.caloMuonCorrConditions %}
-{%- include  "instances/correlation_conditions.vhd" %}
-{%- endfor %}
-{%- for condition in module.muonMuonCorrConditions %}
-{%- include  "instances/correlation_conditions.vhd" %}
-{%- endfor %}
-{%- for condition in module.caloEsumCorrConditions %}
-{%- include  "instances/correlation_conditions.vhd" %}
-{%- endfor %}
-{%- for condition in module.muonEsumCorrConditions %}
-{%- include  "instances/correlation_conditions.vhd" %}
-{%- endfor %}
-{%- for condition in module.minBiasConditions %}
-{%- include  "instances/combinatorial_conditions.vhd" %}
-{%- endfor %}
-{%- for condition in module.towerCountConditions %}
-{%- include  "instances/combinatorial_conditions.vhd" %}
-{%- endfor %}
-{%- for condition in module.asymmetryConditions %}
-{%- include  "instances/combinatorial_conditions.vhd" %}
-{%- endfor %}
+    {%- include  "instances/correlation_conditions.vhd" %}
+{%- endfor %}    
+    -- Centrality assignment
 {%- for condition in module.signalConditions %}
-{%- include  "instances/signal_condition.vhd" %}
-{%- endfor %}
-
--- ************************************************************
-
+    {%- include  "instances/signal_condition.vhd" %}
+{%- endfor -%}
+    -- External condition assignment
+{%- for condition in module.externalConditions %}
+    {{ condition.vhdl_signal }} <= data_in.ext_cond(bx({{ condition.objects[0].bx_raw }}))({{ condition.objects[0].externalChannelId }});
+{%- endfor -%}
 -- Instantiations of algorithms
 {% for algorithm in module.algorithms|sort_by_attribute('index') %}
-{{ algorithm.vhdl_signal }} <= {{ algorithm.vhdl_expression }};
-algo({{ algorithm.module_index | d}}) <= {{ algorithm.vhdl_signal }};
+    {{ algorithm.vhdl_signal }} <= {{ algorithm.vhdl_expression }};
+    algo({{ algorithm.module_index | d}}) <= {{ algorithm.vhdl_signal }};
 {% endfor %}
 
 end architecture rtl;

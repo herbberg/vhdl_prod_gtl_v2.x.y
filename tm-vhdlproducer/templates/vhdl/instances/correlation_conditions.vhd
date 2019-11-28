@@ -12,31 +12,52 @@
   {%- endif %}
         )
         port map(
-            lhc_clk, comb_{{ o1.type|lower|lower }}__index_comb1, comb_{{ o2.type|lower|lower }}__index_comb2,           
+            lhc_clk,           
+  {%- if o1.type == 'eg' or 'jet' or 'tau' %}
+-- calos
+  {%- with obj = condition.objects[0] %}
+            comb_1 => {% include  "helper/helper_comb_and_calos_signals_names.txt" %}
+  {%- endwith %}
+  {%- elif o1.type == 'mu' %}
+-- muons
+  {%- with obj = condition.objects[0] %}
+            comb_1 => {% include  "helper/helper_comb_and_muons_signals_names.txt" %}
+  {%- endwith %}
+  {%- endif %}
+  {%- if o2.type == 'eg' or 'jet' or 'tau' %}
+-- calos
+  {%- with obj = condition.objects[0] %}
+            comb_2 => {% include  "helper/helper_comb_and_calos_signals_names.txt" %}
+  {%- endwith %}
+  {%- elif o2.type == 'mu' %}
+-- muons
+  {%- with obj = condition.objects[0] %}
+            comb_2 => {% include  "helper/helper_comb_and_muons_signals_names.txt" %}
+  {%- endwith %}
+  {%- endif %}
   {%- if condition.deltaEta.enabled == "true" %} 
-            deta => deta_{{ o1.type|lower }}_{{ o2.type|lower }}__index,         
+            deta => comp_deta_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaEta.lower|X13 }}_0x{{ condition.deltaEta.upper|X13 }},         
   {%- endif %}            
   {%- if condition.deltaPhi.enabled == "true" %} 
-            dphi => dphi_{{ o1.type|lower }}_{{ o2.type|lower }}__index,        
+            dphi => comp_dphi_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaPhi.lower|X13 }}_0x{{ condition.deltaPhi.upper|X13 }},        
   {%- endif %}            
   {%- if condition.deltaR.enabled == "true" %} 
-            delta_r => dr_{{ o1.type|lower }}_{{ o2.type|lower }}__index,        
+            delta_r => comp_dr_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaR.lower|X13 }}_0x{{ condition.deltaR.upper|X13 }},        
   {%- endif %}            
   {%- if condition.mass.enabled == "true" %} 
     {%- if condition.mass.type == 0 %} 
-            inv_mass => inv_mass_{{ o1.type|lower }}_{{ o2.type|lower }}__index,
+            inv_mass => comp_inv_mass_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.mass.lower|X13 }}_0x{{ condition.mass.upper|X13 }},
     {%- endif %}            
     {%- if condition.mass.type == 1 %} 
-            trans_mass => trans_mass_{{ o1.type|lower }}_{{ o2.type|lower }}__index,
+            trans_mass => comp_trans_mass_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.mass.lower|X13 }}_0x{{ condition.mass.upper|X13 }},
     {%- endif %}
   {%- endif %}
   {%- if condition.twoBodyPt.enabled == "true" %} 
-            tbpt => tbpt_{{ o1.type|lower }}_{{ o2.type|lower }}__index,     
+            tbpt => comp_tbpt_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.twoBodyPt.lower|X13 }},     
   {%- endif %}            
   {%- if condition.chargeCorrelation in ('os', 'ls') %}
-            charge_corr_double => cc_double__index,
+            charge_corr_double => comp_cc_double_bx_{{ o1.bx }}_bx_{{ o2.bx }}_{{ condition.chargeCorrelation }},
   {%- endif %}
             cond_o => {{ condition.vhdl_signal }}
         );
 {% endblock instantiate_correlation_conditions %}
-{# eof #}

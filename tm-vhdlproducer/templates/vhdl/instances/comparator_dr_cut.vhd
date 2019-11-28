@@ -9,7 +9,7 @@
         )
         port map(
             lhc_clk, 
-            dr_{{ o1.type|lower }}_{{ o2.type|lower }}(bx({{ o1.bx }}),bx({{ o2.bx }})), comp_dr_{{ o1.type|lower }}_{{ o2.type|lower }}_bx{{ o1.bx }}_bx{{ o2.bx }}_0x{{ comparator.objects[0].objects[1].index.lower|X13 }}_0x{{ comparator.objects[0].objects[1].index.upper|X13 }}
+            dr_{{ o1.type|lower }}_{{ o2.type|lower }}(bx({{ o1.bx_raw }}),bx({{ o2.bx_raw }})), comp_dr_{{ o1.type|lower }}_{{ o2.type|lower }}_bx{{ o1.bx }}_bx{{ o2.bx }}_0x{{ comparator.objects[0].objects[1].index.lower|X13 }}_0x{{ comparator.objects[0].objects[1].index.upper|X13 }}
         );
 {% endblock instantiate_comparator_dr_cut %}
 {# eof #}
