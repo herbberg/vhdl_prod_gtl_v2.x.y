@@ -12,4 +12,3 @@
             inv_mass_{{ o1.type|lower }}_{{ o2.type|lower }}(bx({{ o1.bx_raw }}),bx({{ o2.bx_raw }})), comp_inv_mass_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.mass.lower|X13 }}_0x{{ condition.mass.upper|X13 }}
         );
 {%- endblock instantiate_comparator_inv_mass_cut %}
-{# eof #}

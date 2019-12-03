@@ -10,4 +10,3 @@
             cosh_deta_{{ o1.type }}_{{ o2.type }}(bx({{ o1.bx_raw }}),bx({{ o2.bx_raw }}))
         );
 {% endblock instantiate_cosh_deta_lut %}
-{# eof #}

@@ -13,25 +13,21 @@
         )
         port map(
             lhc_clk,           
-  {%- if o1.type == 'eg' or 'jet' or 'tau' %}
--- calos
+  {%- if o1.type == 'EG' or 'JET' or 'TAU' %}
   {%- with obj = condition.objects[0] %}
             comb_1 => {% include  "helper/helper_comb_and_calos_signals_names.txt" %}
   {%- endwith %}
-  {%- elif o1.type == 'mu' %}
--- muons
+  {%- elif o1.type == 'MU' %}
   {%- with obj = condition.objects[0] %}
             comb_1 => {% include  "helper/helper_comb_and_muons_signals_names.txt" %}
   {%- endwith %}
   {%- endif %}
-  {%- if o2.type == 'eg' or 'jet' or 'tau' %}
--- calos
-  {%- with obj = condition.objects[0] %}
+  {%- if o2.type == 'EG' or 'JET' or 'TAU' %}
+  {%- with obj = condition.objects[1] %}
             comb_2 => {% include  "helper/helper_comb_and_calos_signals_names.txt" %}
   {%- endwith %}
-  {%- elif o2.type == 'mu' %}
--- muons
-  {%- with obj = condition.objects[0] %}
+  {%- elif o2.type == 'MU' %}
+  {%- with obj = condition.objects[1] %}
             comb_2 => {% include  "helper/helper_comb_and_muons_signals_names.txt" %}
   {%- endwith %}
   {%- endif %}

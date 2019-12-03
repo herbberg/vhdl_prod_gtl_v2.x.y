@@ -13,5 +13,4 @@
         port map(
             lhc_clk, data.{{ o1.type|lower }}(bx({{ o1.bx_raw }})).pt, comp_pt_{{ o1.type|lower }}_bx_{{ o1.bx }}_0x{{ o1.threshold|X04 }}
         );
-{%- endblock instantiate_comparator_pt_cut %}
-{# eof #}
+{% endblock instantiate_comparator_pt_cut %}

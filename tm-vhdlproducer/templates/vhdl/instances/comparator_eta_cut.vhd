@@ -8,5 +8,4 @@
         port map(
             lhc_clk, data.{{ o1.type|lower }}(bx({{ o1.bx_raw }})).eta, comp_eta_{{ o1.type|lower }}_bx_{{ o1.bx }}_0x{{ o1.etaCuts[0][0]|X04 }}_0x{{ o1.etaCuts[0][1]|X04 }}
         );
-{%- endblock instantiate_comparator_eta_cut %}
-{# eof #}
+{% endblock instantiate_comparator_eta_cut %}

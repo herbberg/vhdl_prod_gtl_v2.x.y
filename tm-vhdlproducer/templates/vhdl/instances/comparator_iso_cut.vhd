@@ -1,4 +1,4 @@
-{%- block instantiate_condition_iso_cut %}
+{%- block instantiate_comparator_iso_cut %}
   {%- set o1 = condition.objects[0] %}
     comp_iso_{{ o1.type|lower }}_bx{{ o1.bx }}_0x{{ o1.isolationLUT|X04 }}_i: entity work.comparators_obj_cuts
         generic map(
@@ -8,4 +8,4 @@
         port map(
             lhc_clk, data.{{ o1.type|lower }}(bx({{ o1.bx_raw }})).iso, comp_iso_{{ o1.type|lower }}_bx_{{ o1.bx }}_0x{{ o1.isolationLUT|X04 }}
         );
-{% endblock instantiate_condition_iso_cut %}
+{% endblock instantiate_comparator_iso_cut %}

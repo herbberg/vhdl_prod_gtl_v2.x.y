@@ -12,4 +12,3 @@
             deta_{{ o1.type|lower }}_{{ o2.type|lower }}(bx({{ o1.bx_raw }}),bx({{ o2.bx_raw }})), comp_deta_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaEta.lower|X13 }}_0x{{ condition.deltaEta.upper|X13 }}
         );
 {% endblock instantiate_comparator_deta_cut %}
-{# eof #}

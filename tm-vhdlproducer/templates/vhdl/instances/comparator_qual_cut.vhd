@@ -9,4 +9,3 @@
             lhc_clk, data.{{ o1.type|lower }}(bx({{ o1.bx_raw }})).qual, comp_qual_{{ o1.type|lower }}_bx_{{ o1.bx }}_0x{{ o1.qualityLUT|X04 }}
         );
 {% endblock instantiate_comparator_qual_cut %}
-{# eof #}

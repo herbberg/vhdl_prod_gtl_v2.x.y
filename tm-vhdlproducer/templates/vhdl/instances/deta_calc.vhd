@@ -10,6 +10,4 @@
             conv.{{ o2.type|lower }}(bx({{ o2.bx_raw }})).eta,
             deta_calc_{{ o1.type|lower }}_{{ o2.type|lower }}(bx({{ o1.bx_raw }}),bx({{ o2.bx_raw }}))
         );
-{%- endblock instantiate_deta_calc %}
-{# eof #}
-
+{% endblock instantiate_deta_calc %}

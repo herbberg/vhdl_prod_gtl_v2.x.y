@@ -10,4 +10,3 @@
             cos_dphi_{{ o1.type }}_{{ o2.type }}(bx({{ o1.bx_raw }}),bx({{ o2.bx_raw }}))
         );
 {% endblock instantiate_cos_dphi_lut %}
-{# eof #}
