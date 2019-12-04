@@ -1,12 +1,10 @@
 {%- block instantiate_comparator_charge_cut %}
-  {%- set o1 = condition.objects[0] %}
-    comp_charge_{{ o1.type|lower }}_bx{{ o1.bx }}_{{ o1.charge }}_i: entity work.comparators_obj_cuts
+    comp_charge_{{ obj|lower }}_bx_{{ bx }}_{{ charge_str }}_i: entity work.comparators_obj_cuts
         generic map(
-            N_{{ o1.type|upper }}_OBJECTS, {{ o1.type|upper }}_CHARGE_WIDTH,
-            CHARGE, X"0000", X"0000", X"0000", "{{ o1.charge }}"
+            N_{{ obj|upper }}_OBJECTS, {{ obj|upper }}_CHARGE_WIDTH,
+            CHARGE, X"0000", X"0000", X"0000", "{{ charge_str }}"
         )
         port map(
-            lhc_clk, data.{{ o1.type|lower }}(bx({{ o1.bx_raw }})).charge, comp_charge_{{ o1.type|lower }}_bx_{{ o1.bx }}_{{ o1.charge }}
+            lhc_clk, data.{{ obj|lower }}(bx({{ bx_raw }})).charge, comp_charge_{{ obj|lower }}_bx_{{ bx }}_{{ charge_str }}
         );
-{% endblock instantiate_comparator_charge_cut %}
-{# eof #}
+{%- endblock instantiate_comparator_charge_cut %}

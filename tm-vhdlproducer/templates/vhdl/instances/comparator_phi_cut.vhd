@@ -1,11 +1,10 @@
 {%- block instantiate_comparator_phi_cut %}
-  {%- set o1 = condition.objects[0] %}
-    comp_phi_{{ o1.type|lower }}_bx{{ o1.bx }}_0x{{ o1.LowerLimit|X04 }}_0x{{ o1.UpperLimit|X04 }}_i: entity work.comparators_obj_cuts
+    comp_phi_{{ obj|lower }}_bx_{{ bx }}_0x{{ limit_l|lower }}_0x{{ limit_u|lower }}_i: entity work.comparators_obj_cuts
         generic map(
-            N_{{ o1.type|upper }}_OBJECTS, {{ o1.type|upper }}_PHI_WIDTH,
-            PHI, X"{{ o1.LowerLimit|X04 }}", X"{{ o1.UpperLimit|X04 }}", X"0000", "ign" 
+            N_{{ obj|upper }}_OBJECTS, {{ obj|upper }}_ETA_WIDTH,
+            ETA, X"{{ limit_l|upper }}", X"{{ limit_u|upper }}", X"0000", "ign"
         )
         port map(
-            lhc_clk, data.{{ o1.type|lower }}(bx({{ o1.bx_raw }})).phi, comp_phi_{{ o1.type|lower }}_bx_{{ o1.bx }}_0x{{ o1.LowerLimit|X04 }}_0x{{ o1.UpperLimit|X04 }}
+            lhc_clk, data.{{ obj|lower }}(bx({{ bx_raw }})).phi, comp_phi_{{ obj|lower }}_bx_{{ bx }}_0x{{ limit_l|lower }}_0x{{ limit_u|lower }}
         );
-{% endblock instantiate_comparator_phi_cut %}
+{%- endblock instantiate_comparator_phi_cut %}

@@ -1,8 +1,8 @@
-{%- block helper_deta_dphi_signals %}
+{%- block helper_calc_deta_dphi_signals %}
   {%- if condition.deltaEta.enabled == 'true' or condition.deltaR.enabled == 'true' or (condition.mass.enabled == 'true' and condition.mass.type == 0) %}    
-    {%- set sig_calc_deta_list2 = sig_calc_deta_list.append(condition.objects[0].type+'_'+condition.objects[1].type) %}
+    {%- set sig_calc_deta_list2 = sig_calc_deta_list.append(condition.objects[0].type+'_'+condition.objects[1].type+'_'+condition.objects[0].bx_raw|string+'_'+condition.objects[1].bx_raw|string) %}
   {%- endif %}    
   {%- if condition.deltaPhi.enabled == 'true' or condition.deltaR.enabled == 'true' or condition.mass.enabled == 'true' %}    
-    {%- set sig_calc_dphi_list2 = sig_calc_dphi_list.append(condition.objects[0].type+'_'+condition.objects[1].type) %}
+    {%- set sig_calc_dphi_list2 = sig_calc_dphi_list.append(condition.objects[0].type+'_'+condition.objects[1].type+'_'+condition.objects[0].bx_raw|string+'_'+condition.objects[1].bx_raw|string) %}
   {%- endif %}    
-{%- endblock helper_deta_dphi_signals %}
+{%- endblock helper_calc_deta_dphi_signals %}

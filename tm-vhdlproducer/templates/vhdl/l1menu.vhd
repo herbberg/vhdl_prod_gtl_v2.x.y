@@ -49,11 +49,13 @@ architecture rtl of l1menu is
 {%- for condition in module.caloMuonCorrConditions %}
     {%- include  "helper/helper_calc_deta_dphi_signals.txt" %}
 {%- endfor %}
-{%- for i in sig_calc_dphi_list | unique %}
-    signal dphi_calc_{{ i | lower }} : obj_bx_max_eta_range_array;
-{%- endfor %}
 {%- for i in sig_calc_deta_list | unique %}
-    signal deta_calc_{{ i | lower }} : obj_bx_max_eta_range_array;
+    {%- set list_split = i.split('_') %}
+    signal deta_calc_{{ list_split[0]|lower }}_{{ list_split[1]|lower }} : obj_bx_max_eta_range_array;
+{%- endfor %}
+{%- for i in sig_calc_dphi_list | unique %}
+    {%- set list_split = i.split('_') %}
+    signal dphi_calc_{{ list_split[0]|lower }}_{{ list_split[1]|lower }} : obj_bx_max_eta_range_array;
 {%- endfor %}
     -- Correlation cuts
 {%- set corr_cuts_list = [] %}
@@ -72,15 +74,28 @@ architecture rtl of l1menu is
     signal cc_quad : obj_bx_muon_cc_quad_array;
 -- Comparators outputs
     -- Object cuts
-{%- set comp_list = [] %}
+{%- set comp_obj_cuts_list = [] %}
 {%- for condition in module.caloConditions %}
     {%- include  "helper/helper_comp_obj_cuts_signals.txt" %}
 {%- endfor %}    
 {%- for condition in module.muonConditions %}
     {%- include  "helper/helper_comp_obj_cuts_signals.txt" %}
 {%- endfor %}    
-{%- for i in comp_list | unique %}
-    signal comp_{{ i | lower }} : std_logic;
+{%- for i in comp_obj_cuts_list | unique %}
+  {%- set list_split = i.split('_') %}
+  {%- if list_split[0] == 'pt' %}
+    signal comp_{{ list_split[0] }}_{{ list_split[1]|lower }}_bx_{{ list_split[3] }}_{{ list_split[6] }} : std_logic;
+  {%- elif list_split[0] == 'eta' %}
+    signal comp_{{ list_split[0] }}_{{ list_split[1]|lower }}_bx_{{ list_split[3] }}_{{ list_split[6] }}_0x{{ list_split[7] }} : std_logic;
+  {%- elif list_split[0] == 'phi' %}
+    signal comp_{{ list_split[0] }}_{{ list_split[1]|lower }}_bx_{{ list_split[3] }}_{{ list_split[6] }}_0x{{ list_split[7] }} : std_logic;
+  {%- elif list_split[0] == 'iso' %}
+    signal comp_{{ list_split[0] }}_{{ list_split[1]|lower }}_bx_{{ list_split[3] }}_{{ list_split[6] }} : std_logic;
+  {%- elif list_split[0] == 'qual' %}
+    signal comp_{{ list_split[0] }}_{{ list_split[1]|lower }}_bx_{{ list_split[3] }}_{{ list_split[6] }} : std_logic;
+  {%- elif list_split[0] == 'charge' %}
+    signal comp_{{ list_split[0] }}_{{ list_split[1]|lower }}_bx_{{ list_split[3] }}_{{ list_split[6] }} : std_logic;
+  {%- endif %}
 {%- endfor %}
     -- Correlation cuts 
 {%- set comp_corr_cuts_list = [] %}
@@ -146,14 +161,6 @@ architecture rtl of l1menu is
     {%- endwith %}
   {%- endif %}    
 {%- endfor %}    
-{%- for condition in module.caloCaloCorrConditions %}
-    {%- with obj = condition.objects[0] %}
-    {%- include  "helper/helper_comb_and_calos_signals.txt" -%}
-    {%- endwith %}
-    {%- with obj = condition.objects[1] %}
-    {%- include  "helper/helper_comb_and_calos_signals.txt" -%}
-    {%- endwith %}
-{%- endfor %}        
 {%- for i in comb_signals_list | unique %}
     signal comb_{{ i | lower }} : std_logic;
 {%- endfor %}
@@ -168,36 +175,115 @@ architecture rtl of l1menu is
 
 begin
 -- First stage: calculations
-{%- for condition in module.caloCaloCorrConditions %}    
-  {%- for i in sig_calc_deta_list | unique %}
-sig_calc_deta_list: {{ i }}
-{{ condition.objects[0].type+'_'+condition.objects[1].type }}
-    {%- if i == (condition.objects[0].type+'_'+condition.objects[1].type) %}
+{%- for i in sig_calc_deta_list | unique %}
+    {% set list_split = i.split('_') %}
+    {%- with obj1 = list_split[0] %}
+    {%- with obj2 = list_split[1] %}
+    {%- with bx1 = list_split[2] %}
+    {%- with bx2 = list_split[3] %}
     {%- include  "instances/deta_calc.vhd" %}
     {%- include  "instances/deta_lut.vhd" %}
-    {%- endif %}    
-  {%- endfor %}
-  {%- for i in sig_calc_dphi_list | unique %}
-sig_calc_dphi_list: {{ i }}
-{{ condition.objects[0].type+'_'+condition.objects[1].type }}
-    {%- if i == (condition.objects[0].type+'_'+condition.objects[1].type) %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+{%- endfor %}
+{%- for i in sig_calc_deta_list | unique %}
+    {% set list_split = i.split('_') %}
+    {%- with obj1 = list_split[0] %}
+    {%- with obj2 = list_split[1] %}
+    {%- with bx1 = list_split[2] %}
+    {%- with bx2 = list_split[3] %}
     {%- include  "instances/dphi_calc.vhd" %}
     {%- include  "instances/dphi_lut.vhd" %}
-    {%- endif %}    
-  {%- endfor %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+{%- endfor %}
+
+-- Second stage: comparisons
+{%- for i in comp_obj_cuts_list | unique %}
+  {%- set list_split = i.split('_') %}    
+  {%- if list_split[0] == 'pt' %}
+    {%- with obj = list_split[1] %}
+    {%- with bx = list_split[3] %}
+    {%- with bx_raw = list_split[5] %}
+    {%- with thr = list_split[6].split('x')[1] %}
+    {%- with ge = list_split[7] %}
+    {%- include  "instances/comparator_pt_cut.vhd" %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+  {%- elif list_split[0] == 'eta' %}
+    {%- with obj = list_split[1] %}
+    {%- with bx = list_split[3] %}
+    {%- with bx_raw = list_split[5] %}
+    {%- with limit_l = list_split[6].split('x')[1] %}
+    {%- with limit_u = list_split[7].split('x')[1] %}
+    {%- include  "instances/comparator_eta_cut.vhd" %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+  {%- elif list_split[0] == 'phi' %}
+    {%- with obj = list_split[1] %}
+    {%- with bx = list_split[3] %}
+    {%- with bx_raw = list_split[5] %}
+    {%- with limit_l = list_split[6].split('x')[1] %}
+    {%- with limit_u = list_split[7].split('x')[1] %}
+    {%- include  "instances/comparator_phi_cut.vhd" %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+  {%- elif list_split[0] == 'iso' %}
+    {%- with obj = list_split[1] %}
+    {%- with bx = list_split[3] %}
+    {%- with bx_raw = list_split[5] %}
+    {%- with iso_lut = list_split[6].split('x')[1] %}
+    {%- include  "instances/comparator_iso_cut.vhd" %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+  {%- elif list_split[0] == 'qual' %}
+    {%- with obj = list_split[1] %}
+    {%- with bx = list_split[3] %}
+    {%- with bx_raw = list_split[5] %}
+    {%- with qual_lut = list_split[6].split('x')[1] %}
+    {%- include  "instances/comparator_qual_cut.vhd" %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+  {%- elif list_split[0] == 'charge' %}
+    {%- with obj = list_split[1] %}
+    {%- with bx = list_split[3] %}
+    {%- with bx_raw = list_split[5] %}
+    {%- with charge_str = list_split[6] %}
+    {%- include  "instances/comparator_charge_cut.vhd" %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+    {%- endwith %}
+  {%- endif %}
 {%- endfor %}
 
 -- Third stage: conditions and algos
     -- Creating condition inputs (combination of object cuts)
-{%- for condition in module.caloConditions %}
-    {%- include  "instances/comb_and_calos.vhd" -%}
-{%- endfor -%}    
-{%- for condition in module.muonConditions %}
-    {%- include  "instances/comb_and_muons.vhd" -%}
-{%- endfor -%}    
-{%- for condition in module.caloCaloCorrConditions %}
-    {%- include  "instances/comb_and_calos.vhd" -%}
-{%- endfor -%}    
+{%- for i in comb_signals_list | unique %}
+  {%- set list_split = i.split('_') %}    
+    {%- with elem = i %}
+    {%- with elem_split = list_split %}
+    {%- include  "helper/helper_comb_and.txt" -%}
+    {%- endwith %}
+    {%- endwith %}
+{%- endfor %}
     -- Instantiations of conditions
 {%- for condition in module.caloConditions %}
     {%- include  "instances/combinatorial_conditions_calos.vhd" %}
