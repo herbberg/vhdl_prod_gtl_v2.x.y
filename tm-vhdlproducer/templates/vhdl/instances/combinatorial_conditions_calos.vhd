@@ -36,4 +36,4 @@
   {%- endif %}
             cond_o => {{ condition.vhdl_signal }}
         );
-{% endblock instantiate_combinatorial_conditions_calos %}
+{%- endblock instantiate_combinatorial_conditions_calos %}

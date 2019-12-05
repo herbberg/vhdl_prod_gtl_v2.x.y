@@ -1,6 +1,6 @@
 {%- block instantiate_comparator_minimum_bias %}
   {%- set o1 = comparator.objects[0] %}
-    comp_{{ o1.type|lower }}_bx{{ o1.bx }}_0x{{ o1.threshold|X04 }}_i: entity work.comparators_obj_cuts
+    comp_{{ o1.type|lower }}_bx{{ o1.bx }}_0x{{ o1.count|X04|lower }}_i: entity work.comparators_obj_cuts
         generic map(
             N_{{ o1.type|upper }}_OBJECTS, {{ o1.type|upper }}_WIDTH,
   {% if o1.operator == true %}  
@@ -8,10 +8,10 @@
   {% else %}  
             EQ, 
   {% endif %}  
-            X"{{ o1.threshold|X04 }}", X"0000", X"0000", "ign"
+            X"{{ o1.count|X04 }}", X"0000", X"0000", "ign"
         )
         port map(
-            lhc_clk, data.{{ o1.type|lower }}(bx({{ o1.bx_raw }})).count, comp_count_{{ o1.type|lower }}_bx_{{ o1.bx }}_0x{{ o1.threshold|X04 }}
+            lhc_clk, data.{{ o1.type|lower }}(bx({{ o1.bx_raw }})).count, comp_count_{{ o1.type|lower }}_bx_{{ o1.bx }}_0x{{ o1.count|X04|lower }}
         );
 {% endblock instantiate_comparator_minimum_bias %}
 {# eof #}

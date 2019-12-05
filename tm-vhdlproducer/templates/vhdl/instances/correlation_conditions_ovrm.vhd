@@ -25,55 +25,65 @@
         port map(
             lhc_clk, 
   {%- if o1.type == o2.type %}  
-            comb_{{ o1.type|lower }}__index_comb1, comb_{{ o2.type|lower }}__index_comb2, comb_{{ o3.type }}__index_comb3,            
+    {%- with obj = o1 %}
+            comb_1 => {% include "helper/helper_comb_and_calos_signals_names.txt" %}
+            comb_2 => {% include "helper/helper_comb_and_calos_signals_names.txt" %}
+    {%- endwith %}
+    {%- with obj = o3 %}
+            comb_3 => {% include "helper/helper_comb_and_calos_signals_names.txt" %}
+    {%- endwith %}
   {%- else %}  
-            comb_{{ o1.type|lower }}__index_comb1, comb_{{ o1.type|lower }}__index_comb1, comb_{{ o2.type }}__index_comb3,            
+    {%- with obj = o1 %}
+            comb_1 => {% include "helper/helper_comb_and_calos_signals_names.txt" %}
+    {%- endwith %}
+    {%- with obj = o2 %}
+            comb_2 => {% include "helper/helper_comb_and_calos_signals_names.txt" %}
+    {%- endwith %}
   {%- endif %}
-  {%- if condition.deltaEta.enabled == "true"  %}
-            deta => deta_{{ o1.type|lower }}_{{ o2.type|lower }}__index_comp_deta,         
+  {%- if condition.deltaEta.enabled == "true" %} 
+            deta => comp_deta_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaEta.lower|X13 }}_0x{{ condition.deltaEta.upper|X13 }},         
   {%- endif %}            
-  {%- if condition.deltaPhi.enabled == "true"  %}
-            dphi => dphi_{{ o1.type|lower }}_{{ o2.type|lower }}__index_comp_dphi,        
+  {%- if condition.deltaPhi.enabled == "true" %} 
+            dphi => comp_dphi_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaPhi.lower|X13 }}_0x{{ condition.deltaPhi.upper|X13 }},        
   {%- endif %}            
-  {%- if condition.deltaR.enabled == "true"  %}
-            delta_r => dr_{{ o1.type|lower }}_{{ o2.type|lower }}__index_comp_dr,        
+  {%- if condition.deltaR.enabled == "true" %} 
+            delta_r => comp_dr_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaR.lower|X13 }}_0x{{ condition.deltaR.upper|X13 }},        
   {%- endif %}            
-  {%- if condition.mass.enabled == "true"  %}
-    {%- if condition.mass.type == 0 %}
-            inv_mass => inv_mass_{{ o1.type|lower }}_{{ o2.type|lower }}__index_comp_inv_mass,
+  {%- if condition.mass.enabled == "true" %} 
+    {%- if condition.mass.type == 0 %} 
+            inv_mass => comp_inv_mass_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.mass.lower|X13 }}_0x{{ condition.mass.upper|X13 }},
     {%- endif %}            
-    {%- if condition.mass.type == 1 %}
-            trans_mass => trans_mass_{{ o1.type|lower }}_{{ o2.type|lower }}__index_comp_trans_mass,
+    {%- if condition.mass.type == 1 %} 
+            trans_mass => comp_trans_mass_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.mass.lower|X13 }}_0x{{ condition.mass.upper|X13 }},
     {%- endif %}
   {%- endif %}
-  {%- if condition.twoBodyPt.enabled == "true" %}
-            tbpt => tbpt_{{ o1.type|lower }}_{{ o2.type|lower }}__index_comp_tbpt,     
+  {%- if condition.twoBodyPt.enabled == "true" %} 
+            tbpt => comp_tbpt_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.twoBodyPt.lower|X13 }},     
   {%- endif %}            
   {%- if condition.chargeCorrelation in ('os', 'ls') %}
-            charge_corr_double => cc_double__index_comp_cc_double,
+            charge_corr_double => comp_cc_double_bx_{{ o1.bx }}_bx_{{ o2.bx }}_{{ condition.chargeCorrelation }},
   {%- endif %}
   {%- if o1.type == o2.type %}  
-    {%- if condition.deltaEtaOrm.enabled == "true" %}
-            deta_ovrm => deta_{{ o1.type|lower }}_{{ o3.type|lower }}__index_comp_deta,         
-    {%- endif %}
-    {%- if condition.deltaPhiOrm.enabled == "true" %}
-            dphi_ovrm => dphi_{{ o1.type|lower }}_{{ o3.type|lower }}__index_comp_dphi,         
-    {%- endif %}
-    {%- if condition.deltaROrm.enabled == "true" %}
-            dr_ovrm => dr_{{ o1.type|lower }}_{{ o3.type|lower }}__index_comp_dr,        
+    {%- if condition.deltaEtaOrm.enabled == "true" %} 
+            deta_ovrm => comp_deta_{{ o1.type|lower }}_{{ o3.type|lower }}_bx_{{ o1.bx }}_bx_{{ o3.bx }}_0x{{ condition.deltaEta.lower|X13 }}_0x{{ condition.deltaEta.upper|X13 }},         
+    {%- endif %}            
+    {%- if condition.deltaPhiOrm.enabled == "true" %} 
+            dphi_ovrm => comp_dphi_{{ o1.type|lower }}_{{ o3.type|lower }}_bx_{{ o1.bx }}_bx_{{ o3.bx }}_0x{{ condition.deltaPhi.lower|X13 }}_0x{{ condition.deltaPhi.upper|X13 }},        
+    {%- endif %}            
+    {%- if condition.deltaROrm.enabled == "true" %} 
+            dr_ovrm => comp_dr_{{ o1.type|lower }}_{{ o3.type|lower }}_bx_{{ o1.bx }}_bx_{{ o3.bx }}_0x{{ condition.deltaR.lower|X13 }}_0x{{ condition.deltaR.upper|X13 }},        
     {%- endif %}            
   {%- else %}  
-    {%- if condition.deltaEtaOrm.enabled == "true" %}
-            deta_ovrm => deta_{{ o1.type|lower }}_{{ o2.type|lower }}__index_comp_deta,         
-    {%- endif %}
-    {%- if condition.deltaPhiOrm.enabled == "true" %}
-            dphi_ovrm => dphi_{{ o1.type|lower }}_{{ o2.type|lower }}__index_comp_dphi,         
-    {%- endif %}
-    {%- if condition.deltaROrm.enabled == "true" %}
-            dr_ovrm => dr_{{ o1.type|lower }}_{{ o2.type|lower }}__index_comp_dr,        
+    {%- if condition.deltaEtaOrm.enabled == "true" %} 
+            deta_ovrm => comp_deta_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaEta.lower|X13 }}_0x{{ condition.deltaEta.upper|X13 }},         
+    {%- endif %}            
+    {%- if condition.deltaPhiOrm.enabled == "true" %} 
+            dphi_ovrm => comp_dphi_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaPhi.lower|X13 }}_0x{{ condition.deltaPhi.upper|X13 }},        
+    {%- endif %}            
+    {%- if condition.deltaROrm.enabled == "true" %} 
+            dr_ovrm => comp_dr_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaR.lower|X13 }}_0x{{ condition.deltaR.upper|X13 }},        
     {%- endif %}            
   {%- endif %}
             cond_o => {{ condition.vhdl_signal }}
         );
-{% endblock instantiate_correlation_conditions_ovrm %}
-{# eof #}
+{%- endblock instantiate_correlation_conditions_ovrm %}

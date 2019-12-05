@@ -39,7 +39,10 @@
             tbpt => tbpt_{{ o1.type|lower }}_{{ o1.type|lower }}__index_comp_tbpt,        
   {%- endif %}
   {%- if condition.chargeCorrelation in ('os', 'ls') %}
-    {%- if condition.nr_objects  == 2 %}
+-- ********************************************
+-- insert correct string for charge correlation
+ -- ********************************************
+   {%- if condition.nr_objects  == 2 %}
             charge_corr_double => cc_double__index_comp_cc_double,
     {%- elif condition.nr_objects  == 3 %}
             charge_corr_triple => cc_triple__index_comp_cc_triple,
@@ -49,4 +52,4 @@
   {%- endif %}
             cond_o => {{ condition.vhdl_signal }}
         );
-{% endblock instantiate_combinatorial_conditions_muons %}
+{%- endblock instantiate_combinatorial_conditions_muons %}

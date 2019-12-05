@@ -1,9 +1,5 @@
-{%- block helper_comp_obj_cuts_signals %}
-  {%- if obj.count == 0 %}
-    {%- set comp_obj_cuts_list2 = comp_obj_cuts_list.append('pt_'+obj.type+'_bx_'+obj.bx+'_bxraw_'+obj.bx_raw|string+'_0x'+obj.threshold|X04|lower+'_'+obj.operator|lower) %}
-  {%- else %}
-    {%- set comp_obj_cuts_list2 = comp_obj_cuts_list.append('count_'+obj.type+'_bx_'+obj.bx+'_bxraw_'+obj.bx_raw|string+'_0x'+obj.count|X04|lower) %}
-  {%- endif %}
+{%- block helper_comp_calos_obj_cuts_signals %}
+  {%- set comp_obj_cuts_list2 = comp_obj_cuts_list.append('pt_'+obj.type+'_bx_'+obj.bx+'_bxraw_'+obj.bx_raw|string+'_0x'+obj.threshold|X04|lower+'_'+obj.operator|lower) %}
   {%- if obj.etaNrCuts > 0 %}
     {%- set comp_obj_cuts_list2 = comp_obj_cuts_list.append('eta_'+obj.type+'_bx_'+obj.bx+'_bxraw_'+obj.bx_raw|string+'_0x'+obj.etaW1LowerLimit|X04|lower+'_0x'+obj.etaW1UpperLimit|X04|lower) %}
   {%- endif %}
@@ -34,4 +30,4 @@
   {%- if obj.charge != 'ign' %}
     {%- set comp_obj_cuts_list2 = comp_obj_cuts_list.append('charge_'+obj.type+'_bx_'+obj.bx+'_bxraw_'+obj.bx_raw|string+'_'+obj.charge) %}
   {%- endif %}
-{%- endblock helper_comp_obj_cuts_signals %}
+{%- endblock helper_comp_calos_obj_cuts_signals %}

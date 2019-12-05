@@ -13,23 +13,23 @@
         )
         port map(
             lhc_clk,           
-  {%- if o1.type == 'EG' or 'JET' or 'TAU' %}
-  {%- with obj = condition.objects[0] %}
-            comb_1 => {% include  "helper/helper_comb_and_calos_signals_names.txt" %}
-  {%- endwith %}
+  {%- if o1.type == 'EG' or o1.type == 'JET' or o1.type == 'TAU' %}
+    {%- with obj = o1 %}
+            comb_1 => {% include "helper/helper_comb_and_calos_signals_names.txt" %}
+    {%- endwith %}
   {%- elif o1.type == 'MU' %}
-  {%- with obj = condition.objects[0] %}
-            comb_1 => {% include  "helper/helper_comb_and_muons_signals_names.txt" %}
-  {%- endwith %}
+    {%- with obj = o1 %}
+            comb_1 => {% include "helper/helper_comb_and_muons_signals_names.txt" %}
+    {%- endwith %}
   {%- endif %}
-  {%- if o2.type == 'EG' or 'JET' or 'TAU' %}
-  {%- with obj = condition.objects[1] %}
-            comb_2 => {% include  "helper/helper_comb_and_calos_signals_names.txt" %}
-  {%- endwith %}
+  {%- if o2.type == 'EG' or o2.type == 'JET' or o2.type == 'TAU' %}
+    {%- with obj = o2 %}
+            comb_2 => {% include "helper/helper_comb_and_calos_signals_names.txt" %}
+    {%- endwith %}
   {%- elif o2.type == 'MU' %}
-  {%- with obj = condition.objects[1] %}
-            comb_2 => {% include  "helper/helper_comb_and_muons_signals_names.txt" %}
-  {%- endwith %}
+    {%- with obj = o2 %}
+            comb_2 => {% include "helper/helper_comb_and_muons_signals_names.txt" %}
+    {%- endwith %}
   {%- endif %}
   {%- if condition.deltaEta.enabled == "true" %} 
             deta => comp_deta_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaEta.lower|X13 }}_0x{{ condition.deltaEta.upper|X13 }},         

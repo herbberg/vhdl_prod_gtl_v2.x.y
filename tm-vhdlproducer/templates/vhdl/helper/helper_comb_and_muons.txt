@@ -1,35 +1,36 @@
 {%- block helper_comb_and_muons %}
-    comb_{{ obj.type|lower }}_bx_{{ obj.bx_raw }}_pt_{{ obj.threshold|X04 }}_eta_{{ obj.etaW1LowerLimit|X04 }}_{{ obj.etaW1UpperLimit|X04 }}_{{ obj.etaW2LowerLimit|X04 }}_{{ obj.etaW2UpperLimit|X04 }}_{{ obj.etaW3LowerLimit|X04 }}_{{ obj.etaW3UpperLimit|X04 }}_{{ obj.etaW4LowerLimit|X04 }}_{{ obj.etaW4UpperLimit|X04 }}_{{ obj.etaW5LowerLimit|X04 }}_{{ obj.etaW5UpperLimit|X04 }}_phi_{{ obj.phiW1LowerLimit|X04 }}_{{ obj.phiW1UpperLimit|X04 }}_{{ obj.phiW2LowerLimit|X04 }}_{{ obj.phiW2UpperLimit|X04 }}_iso_{{ obj.isolationLUT|X04 }}_qual_{{ obj.qualityLUT|X04 }}_charge_{{ obj.charge }} <= comp_pt_{{ obj.type|lower }}_bx_{{ obj.bx_raw }}_0x{{ obj.threshold|X04 }}
-    {%- if obj.etaNrCuts > 0 %}  
-    and comp_eta_{{ obj.type|lower }}_bx_{{ obj.bx_raw }}_0x{{ obj.etaW1LowerLimit|X04 }}_0x{{ obj.etaW1UpperLimit|X04 }}
-    {%- endif %}
-    {%- if obj.etaNrCuts > 1 %}  
-    and comp_eta_{{ obj.type|lower }}_bx_{{ obj.bx_raw }}_0x{{ obj.etaW2LowerLimit|X04 }}_0x{{ obj.etaW2UpperLimit|X04 }}
-    {%- endif %}
-    {%- if obj.etaNrCuts > 2 %}  
-    and comp_eta_{{ obj.type|lower }}_bx_{{ obj.bx_raw }}_0x{{ obj.etaW3LowerLimit|X04 }}_0x{{ obj.etaW3UpperLimit|X04 }}
-    {%- endif %}
-    {%- if obj.etaNrCuts > 3 %}  
-    and comp_eta_{{ obj.type|lower }}_bx_{{ obj.bx_raw }}_0x{{ obj.etaW4LowerLimit|X04 }}_0x{{ obj.etaW4UpperLimit|X04 }}
-    {%- endif %}
-    {%- if obj.etaNrCuts > 4 %}  
-    and comp_eta_{{ obj.type|lower }}_bx_{{ obj.bx_raw }}_0x{{ obj.etaW5LowerLimit|X04 }}_0x{{ obj.etaW5UpperLimit|X04 }}
-    {%- endif %}
-    {%- if obj.phiFullRange == 'false' %}  
-    and comp_phi_{{ obj.type|lower }}_bx_{{ obj.bx_raw }}_0x{{ obj.phiW1LowerLimit|X04 }}_0x{{ obj.phiW1UpperLimit|X04 }}
-    {%- endif %}
-    {%- if obj.phiW2Ignore == 'false' %}  
-    and comp_phi_{{ obj.type|lower }}_bx_{{ obj.bx_raw }}_0x{{ obj.phiW2LowerLimit|X04 }}_0x{{ obj.phiW2UpperLimit|X04 }}
-    {%- endif %}
-    {%- if obj.isolationLUT != 15 %}  
-    and comp_iso_{{ obj.type|lower }}_bx_{{ obj.bx_raw }}_0x{{ obj.isolationLUT|X04 }}
-    {%- endif %}
-    {%- if obj.qualityLUT != 65535 %}  
-    and comp_qual_{{ obj.type|lower }}_bx_{{ obj.bx_raw }}_0x{{ obj.qualityLUT|X04 }}
-    {%- endif %}
-    {%- if obj.charge != 'ign' %}  
-    and comp_charge_{{ obj.type|lower }}_bx_{{ obj.bx_raw }}_0x{{ obj.charge }}
-    {%- endif %}
+    comb_{{elem|lower}} <= 
+    comp_{{elem_split[3]}}_{{elem_split[0]|lower}}_bx_{{elem_split[2]}}_0x{{elem_split[4]|lower}}
+  {%- if elem_split[6] != '0000' %}
+    and comp_{{elem_split[5]}}_{{elem_split[0]|lower}}_bx_{{elem_split[2]}}_0x{{elem_split[6]|lower}}_0x{{elem_split[7]|lower}}
+  {%- endif %}
+  {%- if elem_split[8] != '0000' %}
+    and comp_{{elem_split[5]}}_{{elem_split[0]|lower}}_bx_{{elem_split[2]}}_0x{{elem_split[8]|lower}}_0x{{elem_split[9]|lower}}
+  {%- endif %}
+  {%- if elem_split[10] != '0000' %}
+    and comp_{{elem_split[5]}}_{{elem_split[0]|lower}}_bx_{{elem_split[2]}}_0x{{elem_split[10]|lower}}_0x{{elem_split[11]|lower}}
+  {%- endif %}
+  {%- if elem_split[12] != '0000' %}
+    and comp_{{elem_split[5]}}_{{elem_split[0]|lower}}_bx_{{elem_split[2]}}_0x{{elem_split[12]|lower}}_0x{{elem_split[13]|lower}}
+  {%- endif %}
+  {%- if elem_split[14] != '0000' %}
+    and comp_{{elem_split[5]}}_{{elem_split[0]|lower}}_bx_{{elem_split[2]}}_0x{{elem_split[14]|lower}}_0x{{elem_split[15]|lower}}
+  {%- endif %}
+  {%- if elem_split[17] != '0000' %}
+    and comp_{{elem_split[16]}}_{{elem_split[0]|lower}}_bx_{{elem_split[2]}}_0x{{elem_split[17]|lower}}_0x{{elem_split[18]|lower}}
+  {%- endif %}
+  {%- if elem_split[19] != '0000' %}
+    and comp_{{elem_split[16]}}_{{elem_split[0]|lower}}_bx_{{elem_split[2]}}_0x{{elem_split[19]|lower}}_0x{{elem_split[20]|lower}}
+  {%- endif %}
+  {%- if elem_split[22]|lower != '000f' %}
+    and comp_{{elem_split[21]}}_{{elem_split[0]|lower}}_bx_{{elem_split[2]}}_0x{{elem_split[22]|lower}}
+  {%- endif %}
+  {%- if elem_split[24]|lower != 'ffff' %}
+    and comp_{{elem_split[23]}}_{{elem_split[0]|lower}}_bx_{{elem_split[2]}}_0x{{elem_split[24]|lower}}
+  {%- endif %}
+  {%- if elem_split[26]|lower != 'ign' %}
+    and comp_{{elem_split[25]}}_{{elem_split[0]|lower}}_bx_{{elem_split[2]}}_0x{{elem_split[26]|lower}}
+  {%- endif %}
     ;
 {%- endblock helper_comb_and_muons %}
 
