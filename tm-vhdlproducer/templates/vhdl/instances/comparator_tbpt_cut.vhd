@@ -1,14 +1,12 @@
 {%- block instantiate_condition_tbpt_cut %}
-  {%- set o1 = condition.objects[0] %}
-  {%- set o2 = condition.objects[1] %}
-    comp_tbpt_{{ o1.type|lower }}_{{ o2.type|lower }}_bx{{ o1.bx }}_bx{{ o2.bx }}_0x{{ condition.objects[0].objects[1].index.lower|X13 }}_i: entity work.conditions_corr_cuts
+    comp_tbpt_{{ obj1|lower }}_{{ obj2|lower }}_bx{{ bx1 }}_bx{{ bx2 }}_0x{{ limit_l|lower }}_i: entity work.conditions_corr_cuts
         generic map(
-            N_{{ o1.type|upper }}_OBJECTS, N_{{ o2.type|upper }}_OBJECTS, ({{ o1.type|lower }}_t,{{ o2.type|lower }}_t),
-            {{ o1.type|upper }}_{{ o2.type|upper }}_TBPT_VECTOR_WIDTH, twoBodyPt, 
-            X"{{ condition.objects[0].objects[1].index.lower|X13 }}"        
+            N_{{ obj1|upper }}_OBJECTS, N_{{ obj2|upper }}_OBJECTS, ({{ obj1|lower }}_t,{{ obj2|lower }}_t),
+            {{ obj1|upper }}_{{ obj2|upper }}_TBPT_VECTOR_WIDTH, twoBodyPt, 
+            X"{{ limit_l|upper }}"        
         )
         port map(
             lhc_clk, 
-            tbpt_{{ o1.type|lower }}_{{ o2.type|lower }}(bx({{ o1.bx_raw }}),bx({{ o2.bx_raw }})), comp_tbpt_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.objects[0].objects[1].index.lower|X13 }}
+            tbpt_{{ obj1|lower }}_{{ obj2|lower }}(bx({{ bx1_raw }}),bx({{ bx2_raw }})), comp_tbpt_{{ obj1|lower }}_{{ obj2|lower }}_bx_{{ bx1 }}_bx_{{ bx2 }}_0x{{ limit_l|lower }}
         );
 {% endblock instantiate_condition_tbpt_cut %}

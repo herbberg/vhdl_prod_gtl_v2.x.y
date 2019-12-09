@@ -19,4 +19,3 @@
     {%- endif %}  
     {{ condition.vhdl_signal }} <= data_in.centrality(bx({{ o.bx_raw }}))({{ cent_bit }});
 {%- endblock instantiate_signal_condition %}
-{# eof #}

@@ -36,18 +36,15 @@
     {%- endwith %}
   {%- endif %}
   {%- if condition.twoBodyPt.enabled == "true" %}
-            tbpt => tbpt_{{ o1.type|lower }}_{{ o1.type|lower }}__index_comp_tbpt,        
+            tbpt => tbpt_{{ o1.type|lower }}_{{ o1.type|lower }}_bx_{{ o1.bx }}_bx_{{ o1.bx }}_0x{{ condition.twoBodyPt.lower|X13 }},        
   {%- endif %}
   {%- if condition.chargeCorrelation in ('os', 'ls') %}
--- ********************************************
--- insert correct string for charge correlation
- -- ********************************************
    {%- if condition.nr_objects  == 2 %}
-            charge_corr_double => cc_double__index_comp_cc_double,
+            charge_corr_double => comp_cc_double_bx_{{ o1.bx }}_bx_{{ o1.bx }}_cc_{{ condition.chargeCorrelation }},
     {%- elif condition.nr_objects  == 3 %}
-            charge_corr_triple => cc_triple__index_comp_cc_triple,
+            charge_corr_triple => comp_cc_triple_bx_{{ o1.bx }}_bx_{{ o1.bx }}_cc_{{ condition.chargeCorrelation }},
     {%- elif condition.nr_objects  == 4 %}
-            charge_corr_quad => cc_quad__index_comp_cc_quad,
+            charge_corr_quad => comp_cc_quad_bx_{{ o1.bx }}_bx_{{ o1.bx }}_cc_{{ condition.chargeCorrelation }},
     {%- endif %}
   {%- endif %}
             cond_o => {{ condition.vhdl_signal }}

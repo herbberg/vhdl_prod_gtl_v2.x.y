@@ -52,7 +52,7 @@
             tbpt => comp_tbpt_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.twoBodyPt.lower|X13 }},     
   {%- endif %}            
   {%- if condition.chargeCorrelation in ('os', 'ls') %}
-            charge_corr_double => comp_cc_double_bx_{{ o1.bx }}_bx_{{ o2.bx }}_{{ condition.chargeCorrelation }},
+            charge_corr_double => comp_cc_double_bx_{{ o1.bx }}_bx_{{ o2.bx }}_cc_{{ condition.chargeCorrelation }},
   {%- endif %}
             cond_o => {{ condition.vhdl_signal }}
         );

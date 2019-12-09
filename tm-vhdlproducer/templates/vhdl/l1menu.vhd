@@ -143,12 +143,21 @@ architecture rtl of l1menu is
     {%- include "helper/helper_comp_corr_cuts_signals.txt" %}
 {%- endfor %}   
 {%- for i in comp_corr_cuts_list | unique %}
-    signal comp_{{ i | lower }} : std_logic;
+  {%- set list_split = i.split('_') %}
+    signal comp_{{ list_split[0] }}_{{ list_split[1]|lower }}_{{ list_split[2]|lower }}_bx_{{ list_split[4] }}_bx_{{ list_split[6] }}_{{ list_split[7] }}_{{ list_split[8] }} : std_logic;
 {%- endfor %}
     -- Muon charge correlation 
--- ********************************************
--- to be included!!!
--- ********************************************
+{%- set comp_charge_corr_list = [] %}
+{%- for condition in module.muonConditions %}
+    {%- include "helper/helper_comp_charge_corr_signals.txt" %}
+{%- endfor %}
+{%- for condition in module.muonMuonCorrConditions %}
+    {%- include "helper/helper_comp_charge_corr_signals.txt" %}
+{%- endfor %}
+{%- for i in comp_charge_corr_list | unique %}
+  {%- set list_split = i.split('_') %}
+    signal comp_{{ list_split[0] }}_{{ list_split[1]|lower }}_{{ list_split[2]|lower }}_{{ list_split[3]|lower }}_{{ list_split[4] }}_{{ list_split[5] }}_{{ list_split[6] }}_{{ list_split[7] }} : std_logic;
+{%- endfor %}
 -- Conditions inputs
     -- Object cuts "and"
 {%- set comb_signals_list = [] %}
@@ -225,13 +234,27 @@ architecture rtl of l1menu is
 {%- endfor %}
 begin
 -- First stage: calculations
+
+{%- set charge_corr_bx_list = [] %}
+{%- for i in comp_charge_corr_list | unique %}
+  {%- set list_split = i.split('_') %}
+  {%- with bx1 = list_split[3], bx2 = list_split[5], bx1_raw = list_split[8], bx2_raw = list_split[9]%}
+  {%- set charge_corr_bx_list2 = charge_corr_bx_list.append(bx1+'_'+bx2+'_'+bx1_raw+'_'+bx2_raw) %}
+  {%- endwith %}
+{%- endfor %}
+{%- for i in charge_corr_bx_list | unique %}
+  {%- set list_split = i.split('_') %}
+  {%- with bx1 = list_split[0], bx2 = list_split[1], bx1_raw = list_split[2], bx2_raw = list_split[3] %}
+    {%- include "instances/muon_charge_correlations_calc.vhd" %}
+  {%- endwith %}
+{%- endfor %}
 {%- for i in sig_calc_deta_list | unique %}
   {% set list_split = i.split('_') %}
   {%- with obj1 = list_split[0], obj2 = list_split[1], bx1 = list_split[0], bx2 = list_split[0] %}
     {%- include "instances/deta_calc.vhd" %}
     {%- include "instances/deta_lut.vhd" %}
   {%- endwith %}
-  {%- endfor %}
+{%- endfor %}
 {%- for i in sig_calc_deta_list | unique %}
   {% set list_split = i.split('_') %}
   {%- with obj1 = list_split[0], obj2 = list_split[1], bx1 = list_split[0], bx2 = list_split[0] %}
@@ -273,11 +296,46 @@ begin
       {%- endwith %}
   {%- endif %}
 {%- endfor %}
-
-    -- Muon charge correlation 
--- ********************************************
--- to be included!!!
--- ********************************************
+{%- for i in comp_corr_cuts_list | unique %}
+  {%- set list_split = i.split('_') %}    
+  {%- if list_split[0] == 'deta' %}
+    {%- with obj1 = list_split[1], obj2 = list_split[2], bx1 = list_split[4], bx2 = list_split[6], bx_raw1 = list_split[9], bx_raw2 = list_split[10], limit_l = list_split[7].split('x')[1], limit_u = list_split[8].split('x')[1] %}
+    {%- include "instances/comparator_deta_cut.vhd" %}
+    {%- endwith %}
+  {%- elif list_split[0] == 'dphi' %}
+    {%- with obj1 = list_split[1], obj2 = list_split[2], bx1 = list_split[4], bx2 = list_split[6], bx_raw1 = list_split[9], bx_raw2 = list_split[10], limit_l = list_split[8].split('x')[1], limit_u = list_split[10].split('x')[1] %}
+    {%- include "instances/comparator_dphi_cut.vhd" %}
+    {%- endwith %}
+  {%- elif list_split[0] == 'dr' %}
+    {%- with obj1 = list_split[1], obj2 = list_split[2], bx1 = list_split[4], bx2 = list_split[6], bx_raw1 = list_split[9], bx_raw2 = list_split[10], limit_l = list_split[7].split('x')[1], limit_u = list_split[8].split('x')[1] %}
+    {%- include "instances/comparator_dr_cut.vhd" %}
+    {%- endwith %}
+  {%- elif list_split[0] == 'inv_mass' %}
+    {%- with obj1 = list_split[1], obj2 = list_split[2], bx1 = list_split[4], bx2 = list_split[6], bx_raw1 = list_split[9], bx_raw2 = list_split[10], limit_l = list_split[7].split('x')[1], limit_u = list_split[8].split('x')[1] %}
+    {%- include "instances/comparator_inv_mass_cut.vhd" %}
+    {%- endwith %}
+  {%- elif list_split[0] == 'trans_mass' %}
+    {%- with obj1 = list_split[1], obj2 = list_split[2], bx1 = list_split[4], bx2 = list_split[6], bx_raw1 = list_split[9], bx_raw2 = list_split[10], limit_l = list_split[7].split('x')[1], limit_u = list_split[8].split('x')[1] %}
+    {%- include "instances/comparator_inv_mass_cut.vhd" %}
+    {%- endwith %}
+  {%- elif list_split[0] == 'tbpt' %}
+    {%- with obj1 = list_split[1], obj2 = list_split[2], bx1 = list_split[4], bx2 = list_split[6], bx_raw1 = list_split[9], bx_raw2 = list_split[10], limit_l = list_split[7].split('x')[1], limit_u = list_split[8].split('x')[1] %}
+    {%- include "instances/comparator_tbpt_cut.vhd" %}
+    {%- endwith %}
+  {%- endif %}
+{%- endfor %}
+{%- for i in comp_charge_corr_list | unique %}
+  {%- set list_split = i.split('_') %}    
+  {%- with bx1 = list_split[3], bx2 = list_split[5], cc_val = list_split[7], bx_raw1 = list_split[8], bx_raw2 = list_split[9] %}
+    {%- if list_split[1] == 'double' %}
+    {%- include "instances/comparator_muon_charge_corr_double.vhd" %}
+    {%- elif list_split[1] == 'triple' %}
+    {%- include "instances/comparator_muon_charge_corr_triple.vhd" %}
+    {%- elif list_split[1] == 'quad' %}
+    {%- include "instances/comparator_muon_charge_corr_quad.vhd" %}
+    {%- endif %}
+  {%- endwith %}
+{%- endfor %}
 
 -- Third stage: conditions and algos
     -- Creating condition inputs (combination of object cuts)

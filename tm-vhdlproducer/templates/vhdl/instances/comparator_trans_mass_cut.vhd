@@ -1,14 +1,12 @@
-{%- block instantiate_condition_trans_mass_cut %}
-  {%- set o1 = condition.objects[0] %}
-  {%- set o2 = condition.objects[1] %}
-    comp_trans_mass_{{ o1.type|lower }}_{{ o2.type|lower }}_bx{{ o1.bx }}_bx{{ o2.bx }}_0x{{ condition.objects[0].objects[1].index.lower|X13 }}_0x{{ condition.objects[0].objects[1].index.upper|X13 }}_i: entity work.conditions_corr_cuts
+{%- block instantiate_comparator_trans_mass_cut %}
+    comp_trans_mass_{{ obj1|lower }}_{{ obj2|lower }}_bx_{{ bx1 }}_bx_{{ bx2 }}_0x{{ limit_l|lower }}_0x{{ limit_u|lower }}_i: entity work.comparators_corr_cuts
         generic map(
-            N_{{ o1.type|upper }}_OBJECTS, N_{{ o2.type|upper }}_OBJECTS, ({{ o1.type|lower }}_t,{{ o2.type|lower }}_t),
-            {{ o1.type|upper }}_{{ o2.type|upper }}_MASS_VECTOR_WIDTH, mass, 
-            X"{{ condition.objects[0].objects[1].index.lower|X13 }}", X"{{ condition.objects[0].objects[1].index.upper|X13 }}"        
+            N_{{ obj1|upper }}_OBJECTS, N_{{ obj2|upper }}_OBJECTS, ({{ obj1|lower }}_t,{{ obj2|lower }}_t),
+            {{ obj1|upper }}_{{ obj2|upper }}_MASS_VECTOR_WIDTH, mass, 
+            X"{{ limit_l|upper }}", X"{{ limit_u|upper }}"        
         )
         port map(
             lhc_clk, 
-            trans_mass_{{ o1.type|lower }}_{{ o2.type|lower }}(bx({{ o1.bx_raw }}),bx({{ o2.bx_raw }})), comp_trans_mass_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.objects[0].objects[1].index.lower|X13 }}_0x{{ condition.objects[0].objects[1].index.upper|X13 }}
+            trans_mass_{{ obj1|lower }}_{{ obj2|lower }}(bx({{ bx1_raw }}),bx({{ bx2_raw }})), comp_trans_mass_{{ obj1|lower }}_{{ obj2|lower }}_bx_{{ bx1 }}_bx_{{ bx2 }}_0x{{ limit_l|lower }}_0x{{ limit_u|upper }}
         );
-{% endblock instantiate_condition_trans_mass_cut %}
+{%- endblock instantiate_comparator_trans_mass_cut %}
