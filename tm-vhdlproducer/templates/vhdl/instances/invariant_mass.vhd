@@ -1,18 +1,15 @@
 {%- block instantiate_invariant_mass %}
-  {%- set o1 = condition.objects[0] %}
-  {%- set o2 = condition.objects[1] %}
-    calc_inv_mass_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx_raw }}_bx_{{ o2.bx_raw }}_i: entity work.invariant_mass
+    calc_inv_mass_{{ obj1|lower }}_{{ obj2|lower }}_bx_{{ bx1 }}_bx_{{ bx2 }}_i: entity work.invariant_mass
         generic map(
-            N_{{ o1.type|upper }}_OBJECTS, N_{{ o2.type|upper }}_OBJECTS, ({{ o1.type|lower }}_t,{{ o2.type|lower }}_t),
-            {{ o1.type|upper }}_PT_VECTOR_WIDTH, {{ o2.type|upper }}_PT_VECTOR_WIDTH,
-            {{ o1.type|upper }}_{{ o2.type|upper }}_COSH_COS_VECTOR_WIDTH
+            N_{{ obj1|upper }}_OBJECTS, N_{{ obj2|upper }}_OBJECTS, ({{ obj1|lower }}_t,{{ obj2|lower }}_t),
+            {{ obj1|upper }}_PT_VECTOR_WIDTH, {{ obj2|upper }}_PT_VECTOR_WIDTH,
+            {{ obj1|upper }}_{{ obj2|upper }}_COSH_COS_VECTOR_WIDTH
         )
         port map(
-            conv.{{ o1.type|lower }}(bx({{ o1.bx_raw }})).pt_vector,
-            conv.{{ o2.type|lower }}(bx({{ o2.bx_raw }})).pt_vector,
-            cosh_deta_{{ o1.type|lower }}_{{ o2.type|lower }}(bx({{ o1.bx_raw }}),bx({{ o2.bx_raw }})),
-            cos_dphi_{{ o1.type|lower }}_{{ o2.type|lower }}(bx({{ o1.bx_raw }}),bx({{ o2.bx_raw }})),
-            inv_mass_{{ o1.type|lower }}_{{ o2.type|lower }}(bx({{ o1.bx_raw }}),bx({{ o2.bx_raw }}))
+            conv.{{ obj1|lower }}(bx({{ bx1_raw }})).pt_vector,
+            conv.{{ obj2|lower }}(bx({{ bx2_raw }})).pt_vector,
+            cosh_deta_{{ obj1|lower }}_{{ obj2|lower }}(bx({{ bx1_raw }}),bx({{ bx2_raw }})),
+            cos_dphi_{{ obj1|lower }}_{{ obj2|lower }}(bx({{ bx1_raw }}),bx({{ bx2_raw }})),
+            invmass_{{ obj1|lower }}_{{ obj2|lower }}(bx({{ bx1_raw }}),bx({{ bx2_raw }}))
        );
 {%- endblock instantiate_invariant_mass %}
-{# eof #}

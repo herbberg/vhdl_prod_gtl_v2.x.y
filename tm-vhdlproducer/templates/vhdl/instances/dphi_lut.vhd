@@ -4,7 +4,7 @@
             N_{{ obj1|upper }}_OBJECTS, N_{{ obj2|upper }}_OBJECTS, ({{ obj1|lower }}_t,{{ obj2|lower }}_t)
         )
         port map(
-            dphi_calc_{{ obj1|lower }}_{{ obj2|lower }}(bx({{ bx1 }}),bx({{ bx2 }})),
-            dphi_{{ obj1|lower }}_{{ obj2|lower }}(bx({{ bx1 }}),bx({{ bx2 }}))
+            dphi_calc_{{ obj1|lower }}_{{ obj2|lower }}(bx({{ bx1_raw }}),bx({{ bx2_raw }})),
+            dphi_{{ obj1|lower }}_{{ obj2|lower }}(bx({{ bx1_raw }}),bx({{ bx2_raw }}))
         );
 {%- endblock instantiate_dphi_lut %}

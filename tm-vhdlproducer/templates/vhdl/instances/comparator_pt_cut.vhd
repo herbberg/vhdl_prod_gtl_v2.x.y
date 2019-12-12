@@ -2,7 +2,7 @@
     comp_pt_{{ obj|lower }}_bx_{{ bx }}_0x{{ thr|lower }}_i: entity work.comparators_obj_cuts
         generic map(
             N_{{ obj|upper }}_OBJECTS, {{ obj|upper }}_PT_WIDTH,
-  {%- if ge == true %}  
+  {%- if ge == 'true' %}  
             GE, 
   {%- else %}  
             EQ, 

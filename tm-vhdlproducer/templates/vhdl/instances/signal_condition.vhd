@@ -17,5 +17,5 @@
     {%- elif o.type == 'CENT7' %}  
         {%- set cent_bit = 7 %}
     {%- endif %}  
-    {{ condition.vhdl_signal }} <= data_in.centrality(bx({{ o.bx_raw }}))({{ cent_bit }});
+    {{ condition.vhdl_signal }} <= data.centrality(bx({{ o.bx_raw }}))({{ cent_bit }});
 {%- endblock instantiate_signal_condition %}

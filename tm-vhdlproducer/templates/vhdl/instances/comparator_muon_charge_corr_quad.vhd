@@ -5,7 +5,7 @@
         )
         port map(
             lhc_clk, 
-            cc_quad => cc_quad(bx({{ bx_raw1 }}),bx({{ bx_raw2 }})), 
+            cc_quad => cc_quad(bx({{ bx1_raw }}),bx({{ bx2_raw }})), 
             comp_o_quad => comp_cc_quad_bx_{{ bx1 }}_bx_{{ bx2 }}_cc_{{ cc_val|lower }}
         );
 {%- endblock instantiate_comparator_muon_charge_corr_quad %}

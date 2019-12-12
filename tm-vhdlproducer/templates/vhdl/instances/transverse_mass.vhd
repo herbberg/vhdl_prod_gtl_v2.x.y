@@ -1,18 +1,15 @@
 {%- block instantiate_transverse_mass %}
-  {%- set o1 = condition.objects[0] %}
-  {%- set o2 = condition.objects[1] %}
-    calc_trans_mass_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx_raw }}_bx_{{ o2.bx_raw }}_i: entity work.transverse_mass
+    calc_trans_mass_{{ obj1|lower }}_{{ obj2|lower }}_bx_{{ bx1 }}_bx_{{ bx2 }}_i: entity work.transverse_mass
         generic map(
-            N_{{ o1.type|upper }}_OBJECTS, N_{{ o2.type|upper }}_OBJECTS, ({{ o1.type|lower }}_t,{{ o2.type|lower }}_t),
-            {{ o1.type|upper }}_PT_VECTOR_WIDTH, {{ o2.type|upper }}_PT_VECTOR_WIDTH,
-            {{ o1.type|upper }}_{{ o2.type|upper }}_COSH_COS_VECTOR_WIDTH,
-            {{ o1.type|upper }}_{{ o2.type|upper }}_COSH_COS_PRECISION
+            N_{{ obj1|upper }}_OBJECTS, N_{{ obj2|upper }}_OBJECTS, ({{ obj1|lower }}_t,{{ obj2|lower }}_t),
+            {{ obj1|upper }}_PT_VECTOR_WIDTH, {{ obj2|upper }}_PT_VECTOR_WIDTH,
+            {{ obj1|upper }}_{{ obj2|upper }}_COSH_COS_VECTOR_WIDTH,
+            {{ obj1|upper }}_{{ obj2|upper }}_COSH_COS_PRECISION
         )
         port map(
-            conv.{{ o1.type|lower }}(bx({{ o1.bx_raw }})).pt_vector,
-            conv.{{ o2.type|lower }}(bx({{ o2.bx_raw }})).pt_vector,
-            cos_dphi_{{ o1.type|lower }}_{{ o2.type|lower }}(bx({{ o1.bx_raw }}),bx({{ o2.bx_raw }})),
-            trans_mass_{{ o1.type|lower }}_{{ o2.type|lower }}(bx({{ o1.bx_raw }}),bx({{ o2.bx_raw }}))
+            conv.{{ obj1|lower }}(bx({{ bx1_raw }})).pt_vector,
+            conv.{{ obj2|lower }}(bx({{ bx2_raw }})).pt_vector,
+            cos_dphi_{{ obj1|lower }}_{{ obj2|lower }}(bx({{ bx1_raw }}),bx({{ bx2_raw }})),
+            transmass_{{ obj1|lower }}_{{ obj2|lower }}(bx({{ bx1_raw }}),bx({{ bx2_raw }}))
        );
 {%- endblock instantiate_transverse_mass %}
-{# eof #}

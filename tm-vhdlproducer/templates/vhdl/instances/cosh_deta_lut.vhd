@@ -1,12 +1,10 @@
 {%- block instantiate_cosh_deta_lut %}
-  {%- set o1 = condition.objects[0] %}
-  {%- set o2 = condition.objects[1] %}
-    calc_cosh_deta_{{ o1.type }}_{{ o2.type }}_bx_{{ o1.bx_raw }}_bx_{{ o2.bx_raw }}_i: entity work.cosh_deta_lut
+    calc_cosh_deta_{{ obj1|lower }}_{{ obj2|lower }}_bx_{{ bx1 }}_bx_{{ bx2 }}_i: entity work.cosh_deta_lut
         generic map(
-            N_{{ o1.type|upper }}_OBJECTS, N_{{ o2.type|upper }}_OBJECTS, ({{ o1.type }}_t,{{ o2.type }}_t)
+            N_{{ obj1|upper }}_OBJECTS, N_{{ obj2|upper }}_OBJECTS, ({{ obj1 }}_t,{{ obj2 }}_t)
         )
         port map(
-            deta_calc_{{ o1.type }}_{{ o2.type }}(bx({{ o1.bx_raw }}),bx({{ o2.bx_raw }})),
-            cosh_deta_{{ o1.type }}_{{ o2.type }}(bx({{ o1.bx_raw }}),bx({{ o2.bx_raw }}))
+            deta_calc_{{ obj1|lower }}_{{ obj2|lower }}(bx({{ bx1_raw }}),bx({{ bx2_raw }})),
+            cosh_deta_{{ obj1|lower }}_{{ obj2|lower }}(bx({{ bx1_raw }}),bx({{ bx2_raw }}))
         );
-{% endblock instantiate_cosh_deta_lut %}
+{%- endblock instantiate_cosh_deta_lut %}
