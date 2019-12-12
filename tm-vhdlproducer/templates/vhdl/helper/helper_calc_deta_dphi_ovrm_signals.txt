@@ -1,0 +1,8 @@
+{%- block helper_calc_deta_dphi_ovrm_signals %}
+  {%- if condition.deltaEtaOrm.enabled == 'true' or condition.deltaROrm.enabled == 'true' %}    
+    {%- set sig_calc_deta_list2 = sig_calc_deta_list.append(condition.objects[0].type+'_'+condition.objects[1].type+'_'+condition.objects[0].bx+'_'+condition.objects[1].bx+'_'+condition.objects[0].bx_raw|string+'_'+condition.objects[1].bx_raw|string) %}
+  {%- endif %}    
+  {%- if condition.deltaPhiOrm.enabled == 'true' or condition.deltaROrm.enabled == 'true' %}    
+    {%- set sig_calc_dphi_list2 = sig_calc_dphi_list.append(condition.objects[0].type+'_'+condition.objects[1].type+'_'+condition.objects[0].bx+'_'+condition.objects[1].bx+'_'+condition.objects[0].bx_raw|string+'_'+condition.objects[1].bx_raw|string) %}
+  {%- endif %}    
+{%- endblock helper_calc_deta_dphi_ovrm_signals %}
