@@ -41,47 +41,47 @@
     {%- endwith %}
   {%- endif %}
   {%- if condition.deltaEta.enabled == "true" %} 
-            deta => comp_deta_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaEta.lower|X13|lower }}_0x{{ condition.deltaEta.upper|X13|lower }},         
+            deta => comp_deta_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaEta.lower|X14|lower }}_0x{{ condition.deltaEta.upper|X14|lower }},         
   {%- endif %}            
   {%- if condition.deltaPhi.enabled == "true" %} 
-            dphi => comp_dphi_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaPhi.lower|X13|lower }}_0x{{ condition.deltaPhi.upper|X13|lower }},        
+            dphi => comp_dphi_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaPhi.lower|X14|lower }}_0x{{ condition.deltaPhi.upper|X14|lower }},        
   {%- endif %}            
   {%- if condition.deltaR.enabled == "true" %} 
-            delta_r => comp_dr_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaR.lower|X13|lower }}_0x{{ condition.deltaR.upper|X13|lower }},        
+            delta_r => comp_dr_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaR.lower|X14|lower }}_0x{{ condition.deltaR.upper|X14|lower }},        
   {%- endif %}            
   {%- if condition.mass.enabled == "true" %} 
     {%- if condition.mass.type == 0 %} 
-            inv_mass => comp_invmass_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.mass.lower|X13|lower }}_0x{{ condition.mass.upper|X13|lower }},
+            inv_mass => comp_invmass_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.mass.lower|X14|lower }}_0x{{ condition.mass.upper|X14|lower }},
     {%- endif %}            
     {%- if condition.mass.type == 1 %} 
-            trans_mass => comp_transmass_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.mass.lower|X13|lower }}_0x{{ condition.mass.upper|X13|lower }},
+            trans_mass => comp_transmass_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.mass.lower|X14|lower }}_0x{{ condition.mass.upper|X14|lower }},
     {%- endif %}
   {%- endif %}
   {%- if condition.twoBodyPt.enabled == "true" %} 
-            tbpt => comp_tbpt_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.twoBodyPt.lower|X13|lower }},     
+            tbpt => comp_tbpt_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.twoBodyPt.lower|X14|lower }},     
   {%- endif %}            
   {%- if condition.chargeCorrelation in ('os', 'ls') %}
             charge_corr_double => comp_cc_double_bx_{{ o1.bx }}_bx_{{ o2.bx }}_{{ condition.chargeCorrelation }},
   {%- endif %}
   {%- if o1.type == o2.type %}  
     {%- if condition.deltaEtaOrm.enabled == "true" %} 
-            deta_ovrm => comp_deta_{{ o1.type|lower }}_{{ o3.type|lower }}_bx_{{ o1.bx }}_bx_{{ o3.bx }}_0x{{ condition.deltaEtaOrm.lower|X13|lower }}_0x{{ condition.deltaEtaOrm.upper|X13|lower }},         
+            deta_ovrm => comp_deta_{{ o1.type|lower }}_{{ o3.type|lower }}_bx_{{ o1.bx }}_bx_{{ o3.bx }}_0x{{ condition.deltaEtaOrm.lower|X14|lower }}_0x{{ condition.deltaEtaOrm.upper|X14|lower }},         
     {%- endif %}            
     {%- if condition.deltaPhiOrm.enabled == "true" %} 
-            dphi_ovrm => comp_dphi_{{ o1.type|lower }}_{{ o3.type|lower }}_bx_{{ o1.bx }}_bx_{{ o3.bx }}_0x{{ condition.deltaPhiOrm.lower|X13|lower }}_0x{{ condition.deltaPhiOrm.upper|X13|lower }},        
+            dphi_ovrm => comp_dphi_{{ o1.type|lower }}_{{ o3.type|lower }}_bx_{{ o1.bx }}_bx_{{ o3.bx }}_0x{{ condition.deltaPhiOrm.lower|X14|lower }}_0x{{ condition.deltaPhiOrm.upper|X14|lower }},        
     {%- endif %}            
     {%- if condition.deltaROrm.enabled == "true" %} 
-            dr_ovrm => comp_dr_{{ o1.type|lower }}_{{ o3.type|lower }}_bx_{{ o1.bx }}_bx_{{ o3.bx }}_0x{{ condition.deltaROrm.lower|X13|lower }}_0x{{ condition.deltaROrm.upper|X13|lower }},        
+            dr_ovrm => comp_dr_{{ o1.type|lower }}_{{ o3.type|lower }}_bx_{{ o1.bx }}_bx_{{ o3.bx }}_0x{{ condition.deltaROrm.lower|X14|lower }}_0x{{ condition.deltaROrm.upper|X14|lower }},        
     {%- endif %}            
   {%- else %}  
     {%- if condition.deltaEtaOrm.enabled == "true" %} 
-            deta_ovrm => comp_deta_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaEtaOrm.lower|X13|lower }}_0x{{ condition.deltaEtaOrm.upper|X13|lower }},         
+            deta_ovrm => comp_deta_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaEtaOrm.lower|X14|lower }}_0x{{ condition.deltaEtaOrm.upper|X14|lower }},         
     {%- endif %}            
     {%- if condition.deltaPhiOrm.enabled == "true" %} 
-            dphi_ovrm => comp_dphi_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaPhiOrm.lower|X13|lower }}_0x{{ condition.deltaPhiOrm.upper|X13|lower }},        
+            dphi_ovrm => comp_dphi_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaPhiOrm.lower|X14|lower }}_0x{{ condition.deltaPhiOrm.upper|X14|lower }},        
     {%- endif %}            
     {%- if condition.deltaROrm.enabled == "true" %} 
-            dr_ovrm => comp_dr_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaROrm.lower|X13|lower }}_0x{{ condition.deltaROrm.upper|X13|lower }},        
+            dr_ovrm => comp_dr_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaROrm.lower|X14|lower }}_0x{{ condition.deltaROrm.upper|X14|lower }},        
     {%- endif %}            
   {%- endif %}
             cond_o => {{ condition.vhdl_signal }}

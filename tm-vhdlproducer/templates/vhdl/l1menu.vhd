@@ -49,7 +49,16 @@ architecture rtl of l1menu is
 {%- for condition in module.caloCaloCorrConditions %}
     {%- include "helper/helper_comp_corr_cuts_signals.txt" %}
 {%- endfor %}
+{%- for condition in module.caloEsumCorrConditions %}
+    {%- include "helper/helper_comp_corr_cuts_signals.txt" %}
+{%- endfor %}
 {%- for condition in module.caloMuonCorrConditions %}
+    {%- include "helper/helper_comp_corr_cuts_signals.txt" %}
+{%- endfor %}
+{%- for condition in module.muonMuonCorrConditions %}
+    {%- include "helper/helper_comp_corr_cuts_signals.txt" %}
+{%- endfor %}
+{%- for condition in module.muonEsumCorrConditions %}
     {%- include "helper/helper_comp_corr_cuts_signals.txt" %}
 {%- endfor %}
 {%- for condition in module.caloCaloCorrOvRmConditions %}
@@ -93,6 +102,11 @@ architecture rtl of l1menu is
     {%- include "helper/helper_comp_obj_cuts_signals_corr_cond.txt" %}
     {%- endwith %}
 {%- endfor %}    
+{%- for condition in module.caloEsumCorrConditions %}
+   {%- with obj1 = condition.objects[0], obj2 = condition.objects[1] %}
+    {%- include "helper/helper_comp_obj_cuts_signals_corr_cond.txt" %}
+    {%- endwith %}
+{%- endfor %}    
 {%- for condition in module.caloCaloCorrOvRmConditions %}
   {%- if condition.nr_objects > 2 %}
     {%- with obj1 = condition.objects[0], obj2 = condition.objects[1], obj3 = condition.objects[2], nr_obj = condition.nr_objects %}
@@ -105,6 +119,16 @@ architecture rtl of l1menu is
   {%- endif %}
 {%- endfor %}    
 {%- for condition in module.caloMuonCorrConditions %}
+    {%- with obj1 = condition.objects[0], obj2 = condition.objects[1] %}
+    {%- include "helper/helper_comp_obj_cuts_signals_corr_cond.txt" %}
+    {%- endwith %}
+{%- endfor %}    
+{%- for condition in module.muonMuonCorrConditions %}
+    {%- with obj1 = condition.objects[0], obj2 = condition.objects[1] %}
+    {%- include "helper/helper_comp_obj_cuts_signals_corr_cond.txt" %}
+    {%- endwith %}
+{%- endfor %}    
+{%- for condition in module.muonEsumCorrConditions %}
     {%- with obj1 = condition.objects[0], obj2 = condition.objects[1] %}
     {%- include "helper/helper_comp_obj_cuts_signals_corr_cond.txt" %}
     {%- endwith %}
@@ -176,12 +200,36 @@ architecture rtl of l1menu is
     {%- endwith %}
   {%- endif %} 
 {%- endfor %}    
+{%- for condition in module.caloEsumCorrConditions %}
+  {%- with obj = condition.objects[0] %}
+    {%- include "helper/helper_comb_and_calos_signals.txt" %}
+  {%- endwith %}
+  {%- with obj = condition.objects[1] %}
+    {%- include "helper/helper_comb_and_esums_signals.txt" %}
+  {%- endwith %}
+{%- endfor %}    
 {%- for condition in module.caloMuonCorrConditions %}
   {%- with obj = condition.objects[0] %}
     {%- include "helper/helper_comb_and_calos_signals.txt" %}
   {%- endwith %}
   {%- with obj = condition.objects[1] %}
     {%- include "helper/helper_comb_and_muons_signals.txt" %}
+  {%- endwith %}
+{%- endfor %}    
+{%- for condition in module.muonMuonCorrConditions %}
+  {%- with obj = condition.objects[0] %}
+    {%- include "helper/helper_comb_and_muons_signals.txt" %}
+  {%- endwith %}
+  {%- with obj = condition.objects[1] %}
+    {%- include "helper/helper_comb_and_muons_signals.txt" %}
+  {%- endwith %}
+{%- endfor %}    
+{%- for condition in module.muonEsumCorrConditions %}
+  {%- with obj = condition.objects[0] %}
+    {%- include "helper/helper_comb_and_muons_signals.txt" %}
+  {%- endwith %}
+  {%- with obj = condition.objects[1] %}
+    {%- include "helper/helper_comb_and_esums_signals.txt" %}
   {%- endwith %}
 {%- endfor %}    
     {%- include "helper/helper_instances_signals_comb.txt" %}

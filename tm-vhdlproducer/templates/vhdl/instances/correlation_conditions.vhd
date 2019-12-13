@@ -30,26 +30,30 @@
     {%- with obj = o2 %}
             in_2 => {% include "helper/helper_comb_and_muons_signals_names.txt" %}
     {%- endwith %}
+  {%- elif o2.type == 'ETM' or o2.type == 'HTM' or o2.type == 'ETMHF' or o2.type == 'HTMHF' %}
+    {%- with obj = o2 %}
+            in_2 => {% include "helper/helper_comb_and_esums_signals_names.txt" %}
+    {%- endwith %}
   {%- endif %}
   {%- if condition.deltaEta.enabled == "true" %} 
-            deta => comp_deta_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaEta.lower|X13|lower }}_0x{{ condition.deltaEta.upper|X13|lower }},         
+            deta => comp_deta_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaEta.lower|X14|lower }}_0x{{ condition.deltaEta.upper|X14|lower }},         
   {%- endif %}            
   {%- if condition.deltaPhi.enabled == "true" %} 
-            dphi => comp_dphi_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaPhi.lower|X13|lower }}_0x{{ condition.deltaPhi.upper|X13|lower }},        
+            dphi => comp_dphi_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaPhi.lower|X14|lower }}_0x{{ condition.deltaPhi.upper|X14|lower }},        
   {%- endif %}            
   {%- if condition.deltaR.enabled == "true" %} 
-            delta_r => comp_dr_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaR.lower|X13|lower }}_0x{{ condition.deltaR.upper|X13|lower }},        
+            delta_r => comp_dr_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.deltaR.lower|X14|lower }}_0x{{ condition.deltaR.upper|X14|lower }},        
   {%- endif %}            
   {%- if condition.mass.enabled == "true" %} 
     {%- if condition.mass.type == 0 %} 
-            inv_mass => comp_invmass_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.mass.lower|X13|lower }}_0x{{ condition.mass.upper|X13|lower }},
+            inv_mass => comp_invmass_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.mass.lower|X14|lower }}_0x{{ condition.mass.upper|X14|lower }},
     {%- endif %}            
     {%- if condition.mass.type == 1 %} 
-            trans_mass => comp_transmass_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.mass.lower|X13|lower }}_0x{{ condition.mass.upper|X13|lower }},
+            trans_mass => comp_transmass_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.mass.lower|X14|lower }}_0x{{ condition.mass.upper|X14|lower }},
     {%- endif %}
   {%- endif %}
   {%- if condition.twoBodyPt.enabled == "true" %} 
-            tbpt => comp_tbpt_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.twoBodyPt.lower|X13|lower }},     
+            tbpt => comp_tbpt_{{ o1.type|lower }}_{{ o2.type|lower }}_bx_{{ o1.bx }}_bx_{{ o2.bx }}_0x{{ condition.twoBodyPt.lower|X14|lower }},     
   {%- endif %}            
   {%- if condition.chargeCorrelation in ('os', 'ls') %}
             charge_corr_double => comp_cc_double_bx_{{ o1.bx }}_bx_{{ o2.bx }}_cc_{{ condition.chargeCorrelation }},
