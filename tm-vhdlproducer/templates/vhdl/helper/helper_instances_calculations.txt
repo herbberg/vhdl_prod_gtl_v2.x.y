@@ -44,6 +44,10 @@
     {%- include "instances/cos_dphi_lut.vhd" %}
     {%- include "instances/invariant_mass.vhd" %}
     {%- endif %}
+    {%- if list_split[0] == 'transmass' %}
+    {%- include "instances/cos_dphi_lut.vhd" %}
+    {%- include "instances/transverse_mass.vhd" %}
+    {%- endif %}
   {%- endwith %}
 {%- endfor %}
 {%- endblock helper_instances_calculations %}
