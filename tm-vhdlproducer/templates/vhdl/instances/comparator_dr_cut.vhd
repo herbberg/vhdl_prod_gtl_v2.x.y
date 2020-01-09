@@ -23,7 +23,7 @@
   {%- endif %}  
     comp_dr_{{ obj1|lower }}_{{ obj2|lower }}_bx_{{ bx1 }}_bx_{{ bx2 }}_0x{{ limit_l|lower }}_0x{{ limit_u|lower }}_i: entity work.comparators_corr_cuts
         generic map(
-            N_{{ obj1|upper }}_OBJECTS, N_{{ obj2|upper }}_OBJECTS, ({{ obj1|lower }}_t,{{ obj2|lower }}_t),
+            N_{{ obj1|upper }}_OBJECTS, N_{{ obj2|upper }}_OBJECTS, ({{ obj1|lower }}_t,{{ obj2|lower }}_t), (bx({{ bx1_raw }}),bx({{ bx2_raw }})),
             {{ obj1|upper }}_{{ obj2|upper }}_DELTAR_VECTOR_WIDTH, deltaR, 
             X"{{ limit_l|upper }}", X"{{ limit_u|upper }}"        
         )
